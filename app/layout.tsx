@@ -23,7 +23,7 @@ export default function RootLayout({
         {/* client=ca-pub-0000... 여기에 본인 애드센스 ID가 들어가 있어야 합니다 */}
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9757952393788382"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
