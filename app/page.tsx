@@ -82,7 +82,7 @@ const FAQ_DATA: any = {
 
 // FAQ Component with Schema Markup
 const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
-  // 1. 앱 스키마 정의 (구글아 이건 앱이야!)
+  // 1. App Schema (이 사이트는 앱입니다)
   const appSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -93,9 +93,37 @@ const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
     featureList: 'Calculate true hourly wage, IRS mileage deduction, Tax savings goal',
   };
 
+  // 2. [NEW] HowTo Schema (검색 결과에 '하는 법' 단계 표시 - 클릭률 상승!)
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Calculate Real Hourly Wage for Uber & DoorDash',
+    description: 'Learn how to calculate your true net profit after gas and depreciation.',
+    step: [
+      {
+        '@type': 'HowToStep',
+        name: 'Enter Total Payout',
+        text: 'Input your total earnings from the driver app.',
+        url: 'https://gigcalcapp.com'
+      },
+      {
+        '@type': 'HowToStep',
+        name: 'Input Miles & Hours',
+        text: 'Enter the total miles driven and hours worked during the shift.',
+        url: 'https://gigcalcapp.com'
+      },
+      {
+        '@type': 'HowToStep',
+        name: 'Check Real Wage',
+        text: 'GigCalc automatically subtracts gas and wear & tear to show your actual hourly profit.',
+        url: 'https://gigcalcapp.com'
+      }
+    ]
+  };
+
   const faqs = FAQ_DATA[activeTab] || [];
   
-  // 2. FAQ 스키마 정의
+  // 3. FAQ Schema
   const schemaData = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -108,10 +136,10 @@ const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
 
   return (
     <div className="px-6 py-8 bg-slate-50 border-t border-slate-200">
-      {/* 구조화 데이터 스크립트 2개 삽입 */}
+      {/* 3가지 스키마 모두 적용 */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-      {/* ▼▼▼ 아까 빠져있던 이 줄을 제가 채워넣었습니다! ▼▼▼ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> Helpful Guide</h3>
       <div className="space-y-6 text-slate-600">
@@ -283,6 +311,7 @@ export default function Page() {
 
         <main className="flex-1 overflow-y-auto scrollbar-hide">
           <div className="px-6 py-2 pb-6">
+            {/* TAB 1: PROFIT */}
             {activeTab === 'profit' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Driver Profit Calc</h2><p className="text-xs text-slate-500 mt-1">For Uber Eats, DoorDash, Flex Drivers</p></div>
@@ -300,6 +329,7 @@ export default function Page() {
               </div>
             )}
 
+            {/* TAB 2: SAFE SPEND */}
             {activeTab === 'safe' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Your Smart Wallet</h2><p className="text-xs text-slate-500 mt-1">Synced with Driver Tab. Customize your savings.</p></div>
@@ -318,6 +348,7 @@ export default function Page() {
               </div>
             )}
 
+            {/* TAB 3: TAX SHIELD */}
             {activeTab === 'tax' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Tax Shield</h2><p className="text-xs text-slate-500 mt-1">IRS Deduction: <b>67¢ / mile</b></p></div>
@@ -327,6 +358,7 @@ export default function Page() {
               </div>
             )}
 
+            {/* TAB 4: GOAL */}
             {activeTab === 'goal' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Shift Planner</h2><p className="text-xs text-slate-500 mt-1">How long to reach your goal?</p></div>
@@ -336,6 +368,7 @@ export default function Page() {
               </div>
             )}
 
+            {/* TAB 5: HOUSE */}
             {activeTab === 'house' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-4 pt-2"><h2 className="text-lg font-bold text-slate-900">Home Buying Calc 🏠</h2><p className="text-xs text-slate-500 mt-1">Live in it? Or Rent it out?</p></div>
@@ -358,58 +391,38 @@ export default function Page() {
             )}
           </div>
 
+          {/* ▼▼▼ 여기가 중요합니다: 3가지 스니펫을 포함한 DynamicFAQ ▼▼▼ */}
           <DynamicFAQ activeTab={activeTab} />
 
-          {/* ▼▼▼ SEO 전문가 가이드 섹션 (이미 넣어주신 것 그대로 유지) ▼▼▼ */}
+          {/* ▼▼▼ SEO 전문가 가이드 섹션 (검색 노출 강화) ▼▼▼ */}
           <section className="px-6 py-10 bg-white border-t border-slate-100 text-slate-700 leading-relaxed">
             <h2 className="text-xl font-bold mb-4 text-slate-900">Expert Guide: Maximizing Gig Driver Profit</h2>
-            <p className="text-sm mb-4">
-              Being a gig worker for **Uber Eats, DoorDash, or Amazon Flex** is more than just driving. It's about running a business. 
-              Many drivers only look at the "Gross Earnings" shown in the driver app, but that's not your actual pay.
-            </p>
+            <p className="text-sm mb-4">Being a gig worker for **Uber Eats, DoorDash, or Amazon Flex** is more than just driving. It's about running a business. Many drivers only look at the "Gross Earnings" shown in the driver app, but that's not your actual pay.</p>
             <div className="space-y-6">
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <h3 className="text-sm font-bold text-blue-600 mb-2">1. The Power of IRS Mileage Deduction</h3>
-                <p className="text-xs">
-                  In 2024, the IRS allows you to deduct **67 cents for every business mile** driven. This is a massive "Tax Shield". 
-                  If you drive 10,000 miles, you can reduce your taxable income by $6,700, keeping more cash in your wallet.
-                </p>
+                <p className="text-xs">In 2024, the IRS allows you to deduct **67 cents for every business mile** driven. This is a massive "Tax Shield". If you drive 10,000 miles, you can reduce your taxable income by $6,700, keeping more cash in your wallet.</p>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <h3 className="text-sm font-bold text-blue-600 mb-2">2. Calculating True Hourly Wage</h3>
-                <p className="text-xs">
-                  Your true profit equals **Total Payout minus Expenses (Gas + Depreciation)**. Our tool calculates this automatically. 
-                  Knowing this helps you pick better shifts and avoid low-paying orders.
-                </p>
+                <p className="text-xs">Your true profit equals **Total Payout minus Expenses (Gas + Depreciation)**. Our tool calculates this automatically. Knowing this helps you pick better shifts.</p>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <h3 className="text-sm font-bold text-blue-600 mb-2">3. Saving for Taxes & Repairs</h3>
-                <p className="text-xs">
-                  Don't get caught with a huge tax bill. Smart gig drivers save **15-20% for taxes** and about **8 cents per mile** for tires and oil changes. 
-                  Use our "Safe to Spend" calculator to know exactly how much you can spend today.
-                </p>
+                <p className="text-xs">Don't get caught with a huge tax bill. Smart gig drivers save **15-20% for taxes** and about **8 cents per mile** for tires and oil changes. Use our tool to calculate your "Safe to Spend" amount.</p>
               </div>
             </div>
           </section>
 
-          {/* Footer with Feedback Button */}
+          {/* Footer Area */}
           <div className="px-6 pb-24 text-center border-t border-slate-200 pt-8 bg-slate-100">
-            <button onClick={() => setIsFeedbackOpen(true)} className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center justify-center gap-2 mx-auto mb-4 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm transition">
-              <Icons.Mail /> Send Feedback
-            </button>
-            <p className="text-[10px] text-slate-400 leading-relaxed">
-              <strong>DISCLAIMER:</strong> This tool is for informational purposes only. Estimates vary by location. Consult a professional.
-            </p>
-            <p className="text-[10px] text-slate-300 mt-4">
-              © {new Date().getFullYear()} GigCalc.US
-            </p>
+            <button onClick={() => setIsFeedbackOpen(true)} className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center justify-center gap-2 mx-auto mb-4 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm transition"><Icons.Mail /> Send Feedback</button>
+            <p className="text-[10px] text-slate-400 leading-relaxed uppercase"><strong>Disclaimer:</strong> Informational purposes only. Estimates vary by location. Consult a pro.</p>
+            <p className="text-[10px] text-slate-300 mt-4">© {new Date().getFullYear()} GigCalc.US</p>
           </div>
         </main>
 
-        <div className="sticky bottom-0 bg-white/90 backdrop-blur border-t border-slate-200 p-2 z-50 flex justify-center">
-          <span className="text-[9px] font-bold text-slate-300 uppercase">Sponsored Ad Space</span>
-        </div>
-
+        <div className="sticky bottom-0 bg-white/90 backdrop-blur border-t border-slate-200 p-2 z-50 flex justify-center"><span className="text-[9px] font-bold text-slate-300 uppercase">Sponsored Ad Space</span></div>
         <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
       </div>
     </div>
