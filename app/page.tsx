@@ -82,7 +82,7 @@ const FAQ_DATA: any = {
 
 // FAQ Component with Schema Markup
 const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
-  // 1. App Schema (이 사이트는 앱입니다)
+  // 1. App Schema
   const appSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -93,7 +93,7 @@ const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
     featureList: 'Calculate true hourly wage, IRS mileage deduction, Tax savings goal',
   };
 
-  // 2. [NEW] HowTo Schema (검색 결과에 '하는 법' 단계 표시 - 클릭률 상승!)
+  // 2. HowTo Schema
   const howToSchema = {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -136,7 +136,6 @@ const DynamicFAQ = ({ activeTab }: { activeTab: string }) => {
 
   return (
     <div className="px-6 py-8 bg-slate-50 border-t border-slate-200">
-      {/* 3가지 스키마 모두 적용 */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
@@ -315,16 +314,76 @@ export default function Page() {
             {activeTab === 'profit' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Driver Profit Calc</h2><p className="text-xs text-slate-500 mt-1">For Uber Eats, DoorDash, Flex Drivers</p></div>
-                <div className="space-y-4">
-                  <div><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Total App Payout</label><div className="flex items-center bg-slate-50 rounded-2xl px-4 py-3 focus-within:ring-2 ring-blue-100 transition"><span className="text-2xl font-bold text-slate-300 mr-2">$</span><input type="number" value={income} onChange={(e) => setIncome(e.target.value)} placeholder="0" className="w-full bg-transparent text-4xl font-extrabold text-slate-900 outline-none placeholder-slate-200" /></div></div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Hours</label><input type="number" value={hours} onChange={(e) => setHours(e.target.value)} placeholder="0" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none focus:ring-2 ring-blue-100" /></div>
-                    <div><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Miles</label><input type="number" value={miles} onChange={(e) => setMiles(e.target.value)} placeholder="0" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none focus:ring-2 ring-blue-100" /></div>
-                    <div><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Orders</label><input type="number" value={orders} onChange={(e) => setOrders(e.target.value)} placeholder="0" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none focus:ring-2 ring-blue-100" /></div>
+                
+                {/* 1. 소득 입력 (크고 시원하게) */}
+                <div className="mb-8">
+                  <label className="text-base font-black text-slate-700 uppercase tracking-tight mb-3 block">Total App Payout (Gross Income)</label>
+                  <div className="flex items-center bg-slate-50 rounded-2xl px-5 py-5 focus-within:ring-2 ring-blue-500/20 transition-all border border-slate-100 shadow-inner">
+                    <span className="text-3xl font-bold text-blue-600 mr-2">$</span>
+                    <input type="number" value={income} onChange={(e) => setIncome(e.target.value)} placeholder="0.00" className="w-full bg-transparent text-5xl font-black text-slate-900 outline-none placeholder-slate-200" />
                   </div>
                 </div>
-                <details className="group mt-4"><summary className="list-none flex items-center justify-between text-xs font-bold text-slate-400 cursor-pointer py-3 px-2 hover:bg-slate-50 rounded-lg transition"><span>Vehicle Settings (MPG / Gas)</span><span className="group-open:rotate-180 transition text-slate-300">▼</span></summary><div className="grid grid-cols-2 gap-4 mt-2 bg-slate-50 p-4 rounded-2xl"><div><label className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label><input type="number" value={gasPrice} onChange={(e) => setGasPrice(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div><div><label className="text-[10px] font-bold text-slate-400 uppercase">MPG</label><input type="number" value={mpg} onChange={(e) => setMpg(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div></div></details>
-                <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-4 relative overflow-hidden"><p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">True Hourly Wage</p><div className={`text-6xl font-black tracking-tighter mb-4 ${realWage < 10 ? 'text-red-400' : 'text-emerald-400'}`}>${realWage > 0 ? realWage : '0.00'}</div><div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4"><div><p className="text-[10px] text-slate-400 uppercase font-bold">Real $/Mile</p><p className={`text-xl font-bold ${profitPerMile < 1.0 ? 'text-yellow-400' : 'text-white'}`}>${profitPerMile.toFixed(2)}</p></div><div><p className="text-[10px] text-slate-400 uppercase font-bold">Avg $/Order</p><p className="text-xl font-bold text-white">${payPerOrder.toFixed(2)}</p></div></div><div className="border-t border-slate-800 mt-4 pt-2 flex justify-between items-center text-xs"><span className="text-slate-500">Net Profit</span><span className="font-bold text-emerald-400">${netProfit.toFixed(2)}</span></div></div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="col-span-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Hours</label>
+                    <input type="number" value={hours} onChange={(e) => setHours(e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none" />
+                  </div>
+                  {/* 2. 마일 입력 (Active 안내 추가) */}
+                  <div className="col-span-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Miles (Active or Total) ⓘ</label>
+                    <input type="number" value={miles} onChange={(e) => setMiles(e.target.value)} placeholder="Check your app" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none border-2 border-blue-50/50 focus:border-blue-100" />
+                  </div>
+                </div>
+                
+                {/* Orders 입력 */}
+                <div className="mt-4">
+                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Total Orders</label>
+                   <input type="number" value={orders} onChange={(e) => setOrders(e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none" />
+                </div>
+
+                {/* 3. 차량 설정: MPG -> Gas Mileage (쉬운 용어) */}
+                <details className="group mt-4">
+                  <summary className="list-none flex items-center justify-between text-xs font-bold text-slate-400 cursor-pointer py-3 px-2 hover:bg-slate-50 rounded-lg transition">
+                    <span>Vehicle Expenses (Gas & Mileage)</span>
+                    <span className="group-open:rotate-180 transition text-slate-300">▼</span>
+                  </summary>
+                  <div className="grid grid-cols-2 gap-4 mt-2 bg-slate-50 p-4 rounded-2xl">
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label>
+                      <input type="number" value={gasPrice} onChange={(e) => setGasPrice(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase">Gas Mileage</label>
+                      <input type="number" value={mpg} onChange={(e) => setMpg(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" />
+                      <p className="text-[9px] text-slate-400 mt-1 text-right">Miles per Gallon</p>
+                    </div>
+                  </div>
+                </details>
+                
+                {/* 4. 결과창: Net Profit을 가장 크게! */}
+                <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
+                  <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Real Net Profit (Take Home)</p>
+                  {/* 여기가 핵심: 순수익을 가장 크게 표시 */}
+                  <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">
+                    ${netProfit > 0 ? netProfit.toFixed(2) : '0.00'}
+                  </div>
+                  <div className="flex items-center gap-2 mb-4 opacity-80">
+                    <span className="text-xs font-bold text-slate-300">Hourly Wage:</span>
+                    <span className="text-xl font-bold text-white">${realWage > 0 ? realWage : '0.00'}/hr</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4">
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Profit Per Mile</p>
+                      <p className={`text-xl font-extrabold ${profitPerMile < 1.0 ? 'text-yellow-400' : 'text-white'}`}>${profitPerMile.toFixed(2)} <span className="text-xs font-medium opacity-50">/mi</span></p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Pay Per Order</p>
+                      <p className="text-xl font-extrabold text-white">${payPerOrder.toFixed(2)} <span className="text-xs font-medium opacity-50">/avg</span></p>
+                    </div>
+                  </div>
+                </div>
                 <AdSlot />
               </div>
             )}
@@ -391,10 +450,9 @@ export default function Page() {
             )}
           </div>
 
-          {/* ▼▼▼ 여기가 중요합니다: 3가지 스니펫을 포함한 DynamicFAQ ▼▼▼ */}
           <DynamicFAQ activeTab={activeTab} />
 
-          {/* ▼▼▼ SEO 전문가 가이드 섹션 (검색 노출 강화) ▼▼▼ */}
+          {/* ▼▼▼ SEO 전문가 가이드 섹션 ▼▼▼ */}
           <section className="px-6 py-10 bg-white border-t border-slate-100 text-slate-700 leading-relaxed">
             <h2 className="text-xl font-bold mb-4 text-slate-900">Expert Guide: Maximizing Gig Driver Profit</h2>
             <p className="text-sm mb-4">Being a gig worker for **Uber Eats, DoorDash, or Amazon Flex** is more than just driving. It's about running a business. Many drivers only look at the "Gross Earnings" shown in the driver app, but that's not your actual pay.</p>
@@ -405,7 +463,7 @@ export default function Page() {
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <h3 className="text-sm font-bold text-blue-600 mb-2">2. Calculating True Hourly Wage</h3>
-                <p className="text-xs">Your true profit equals **Total Payout minus Expenses (Gas + Depreciation)**. Our tool calculates this automatically. Knowing this helps you pick better shifts.</p>
+                <p className="text-xs">Your true profit equals **Total Payout minus Expenses (Gas + Depreciation)**. Our tool calculates this automatically. Knowing this helps you pick better shifts and avoid low-paying orders.</p>
               </div>
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <h3 className="text-sm font-bold text-blue-600 mb-2">3. Saving for Taxes & Repairs</h3>
