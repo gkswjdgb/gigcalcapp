@@ -1,37 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-// import Head from 'next/head';  <-- 이 줄을 삭제했습니다! (오류 원인)
 
-// --- [Components & Icons] ---
+// --- [Icons & Components] ---
 
 const Icons = {
   Profit: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ),
   Shield: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> ),
   Target: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> ),
-  House: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-    </svg>
-  ),
-  Wallet: () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" />
-    </svg>
-  ),
-  Plane: () => (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-    </svg>
-  ),
-  Mail: () => (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  ),
-  Info: () => (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  ),
+  House: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg> ),
+  Wallet: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg> ),
+  Mail: () => ( <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> ),
 };
 
 const AdSlot = ({ label = 'Sponsored', className = '' }) => (
@@ -43,7 +22,7 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [Content Data for SEO/GEO] ---
+// --- [Content Data for SEO/AdSense] ---
 
 const FAQ_DATA: any = {
   profit: [
@@ -62,7 +41,7 @@ const FAQ_DATA: any = {
   house: [ { q: 'Can gig workers buy a house?', a: "Yes, but lenders look at your Net Profit on tax returns (Schedule C), not the gross app earnings. Use this tool to see your qualifying income." } ]
 };
 
-// [NEW] Platform Specific Deep-Dive Content (This solves "Low Value Content")
+// [NEW] Platform Specific Deep-Dive Content (To satisfy "High Quality Content" policy)
 const PLATFORM_GUIDES: any = {
   uber: {
     title: "Uber Eats & Rideshare Strategy",
@@ -84,28 +63,39 @@ const PLATFORM_GUIDES: any = {
 const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   const [platform, setPlatform] = useState('uber');
 
-  // 1. Organization Schema (Brand Authority)
-  const orgSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'GigCalc US',
-    url: 'https://gigcalcapp.com',
-    logo: 'https://gigcalcapp.com/favicon.ico',
-    description: 'Free financial calculator and tax tools for US gig economy workers.'
-  };
-
-  // 2. App Schema
-  const appSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'GigCalc',
-    applicationCategory: 'FinanceApplication',
-    operatingSystem: 'Web Browser',
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
-  };
+  // Schema Markup for SEO & Trust
+  const schemas = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'GigCalc',
+      applicationCategory: 'FinanceApplication',
+      operatingSystem: 'Web Browser',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'GigCalc US',
+      url: 'https://gigcalcapp.com',
+      logo: 'https://gigcalcapp.com/favicon.ico',
+      description: 'Free financial calculator and tax tools for US gig economy workers.'
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: 'How to Calculate Real Hourly Wage for Uber & DoorDash',
+      description: 'Learn how to calculate your true net profit after gas and depreciation.',
+      step: [
+        { '@type': 'HowToStep', name: 'Enter Total Payout', text: 'Input your total earnings from the driver app.', url: 'https://gigcalcapp.com' },
+        { '@type': 'HowToStep', name: 'Input Miles & Hours', text: 'Enter the total miles driven and hours worked during the shift.', url: 'https://gigcalcapp.com' },
+        { '@type': 'HowToStep', name: 'Check Real Wage', text: 'GigCalc automatically subtracts gas and wear & tear to show your actual hourly profit.', url: 'https://gigcalcapp.com' }
+      ]
+    }
+  ];
 
   const faqs = FAQ_DATA[activeTab] || [];
-  const schemaData = {
+  const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faqs.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
@@ -113,9 +103,10 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
 
   return (
     <div className="px-6 py-8 bg-slate-50 border-t border-slate-200">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+      {schemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* FAQ Section */}
       <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> FAQ & Tips</h3>
@@ -131,12 +122,12 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
       {/* [NEW] Platform Guides Section (Content Booster) */}
       <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm animate-fade-in-up">
         <h3 className="text-sm font-bold text-slate-900 mb-3">📚 Platform Guide</h3>
-        <p className="text-[10px] text-slate-400 mb-3">Select your app for specific tips:</p>
+        <p className="text-[10px] text-slate-400 mb-3">Select your app for specific strategies:</p>
         
         <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide pb-1">
           {Object.keys(PLATFORM_GUIDES).map((key) => (
             <button key={key} onClick={() => setPlatform(key)} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors ${platform === key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
-              {key === 'uber' ? 'Uber / Lyft' : key === 'doordash' ? 'DoorDash / GrubHub' : 'Amazon Flex'}
+              {key === 'uber' ? 'Uber / Lyft' : key === 'doordash' ? 'DoorDash' : 'Amazon Flex'}
             </button>
           ))}
         </div>
@@ -164,10 +155,9 @@ const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
       <div className="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl relative">
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">✕</button>
         <h3 className="text-lg font-bold text-slate-900 mb-1">Send Feedback</h3>
-        <p className="text-xs text-slate-500 mb-4">Found a bug? Suggestion? Let us know!</p>
-        <form action="https://formspree.io/f/xldqqkdb" method="POST" className="space-y-3">
-          <textarea name="message" placeholder="Type your message here..." className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
-          <input type="email" name="email" placeholder="Your Email (Optional)" className="w-full p-3 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100" />
+        <form action="https://formspree.io/f/xldqqkdb" method="POST" className="space-y-3 mt-4">
+          <textarea name="message" placeholder="Bug report or suggestion?" className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
+          <input type="email" name="email" placeholder="Email (Optional)" className="w-full p-3 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100" />
           <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">Send Message 🚀</button>
         </form>
       </div>
@@ -183,11 +173,11 @@ const PrivacyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">✕</button>
         <h2 className="text-lg font-bold text-slate-900 mb-4">Privacy Policy & Terms</h2>
         <div className="text-xs text-slate-600 space-y-4 leading-relaxed">
-          <p><strong>1. Anonymous Usage:</strong> GigCalc.US operates as a client-side application. We do not store your income data, mileage, or financial details on our servers. All calculations happen instantly on your device.</p>
-          <p><strong>2. Cookies & Ads:</strong> We use third-party vendors, including Google AdSense, which uses cookies to serve ads based on a user's prior visits to this website or other websites. We also use Google Analytics to monitor site performance.</p>
-          <p><strong>3. User Rights (CCPA/GDPR):</strong> You have the right to opt-out of personalized advertising by visiting Google's Ad Settings. By using this site, you consent to our use of cookies.</p>
-          <p><strong>4. Disclaimer:</strong> This tool is for informational purposes only and does not constitute professional financial or tax advice. Estimates vary by location and vehicle type.</p>
-          <p className="text-slate-400 mt-6 pt-4 border-t">Last Updated: December 2025</p>
+          <p><strong>1. Data Collection:</strong> GigCalc.US does not store any personal data entered into the calculator on our servers. All calculations are performed locally on your device.</p>
+          <p><strong>2. Cookies:</strong> We use third-party vendors, including Google, which use cookies to serve ads based on a user's prior visits to this website. We also use Google Analytics.</p>
+          <p><strong>3. User Rights:</strong> Users may opt out of personalized advertising by visiting Google Ads Settings. By using this site, you consent to our use of cookies.</p>
+          <p><strong>4. Disclaimer:</strong> This tool is for informational purposes only. Estimates vary by location and vehicle type.</p>
+          <p className="text-slate-400 mt-6 pt-4 border-t">Last Updated: Dec 2025</p>
         </div>
         <button onClick={onClose} className="w-full mt-6 bg-slate-100 text-slate-900 font-bold py-3 rounded-xl hover:bg-slate-200 transition">Close</button>
       </div>
@@ -201,7 +191,7 @@ const CookieBanner = () => {
   if (!show) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-[90] shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up">
-      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies to enable ads and analyze traffic. By using GigCalc, you agree to our Privacy Policy.</p>
+      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies to improve experience and serve ads. By using this site, you agree to our Privacy Policy.</p>
       <button onClick={() => { localStorage.setItem('cookieConsent', 'true'); setShow(false); }} className="bg-blue-600 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm whitespace-nowrap">I Accept</button>
     </div>
   );
@@ -269,7 +259,7 @@ export default function Page() {
     const carMpg = parseFloat(mpg) || 25;
 
     const fuelCost = (mi / carMpg) * gas;
-    const wearCost = mi * 0.1; // Depreciation estimate
+    const wearCost = mi * 0.1; 
     const totalCost = fuelCost + wearCost;
     const net = inc - totalCost;
     const wage = net / hrs;
