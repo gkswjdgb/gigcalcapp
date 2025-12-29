@@ -25,36 +25,36 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
 
 const FAQ_DATA: any = {
   profit: [
-    { q: 'When do I have to file taxes (The $400 Rule)?', a: "Common myth: 'I made under $600 so I don't need to file.' REALITY: If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%). Don't ignore this!" },
-    { q: 'Do I need to pay quarterly taxes?', a: "The IRS requires quarterly estimated payments if you expect to owe more than $1,000 in taxes for the year. Use this calculator to check your estimated tax liability." }
+    { q: 'When do I have to file taxes (The $400 Rule)?', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." },
+    { q: 'Is State Tax included here?', a: "No. This tool calculates Federal Income Tax and Self-Employment Tax. State tax varies wildly (e.g., CA/NY have high taxes, while TX/FL/WA have 0% state income tax)." }
   ],
   safe: [
-    { q: 'Standard Mileage vs Actual Expenses?', a: 'For 90% of gig drivers, the Standard Mileage Deduction (67¢/mile) saves more money and is easier to track than collecting gas receipts. You usually cannot switch back to standard mileage if you start with actual expenses.' },
-    { q: 'How much to save for taxes?', a: "A safe rule is 20-25% of your PROFIT (not gross pay). This covers both Self-Employment Tax (Social Security/Medicare) and Income Tax." }
+    { q: 'How do I prove my mileage to the IRS?', a: "You need a compliant mileage log (date, miles, purpose). 'Aimless driving' with the app on doesn't count. Driving from home to your first pickup is usually 'commuting' (not deductible) unless you have a home office." },
+    { q: 'Should I buy TurboTax?', a: "If you made less than $1,000, paying $100+ for software might not be worth it. Look for 'Free File' options like FreeTaxUSA which support Schedule C for free or low cost." }
   ],
   tax: [
-    { q: 'Does Uber/DoorDash take out taxes?', a: 'No. As a 1099 contractor, YOU are the business. No taxes are withheld. You must calculate and pay them yourself.' },
-    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This lowers your INCOME TAX, but it does NOT lower your SELF-EMPLOYMENT TAX. You still owe SE tax on profits over $400." }
+    { q: 'How is Self-Employment Tax calculated?', a: 'It is 15.3% of 92.35% of your Net Profit. You get to deduct the "employer" half of this tax on your 1040 form. This calculator handles that complex math for you.' },
+    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This deduction lowers your Income Tax, but it DOES NOT lower your Self-Employment Tax." }
   ],
-  goal: [ { q: 'How many hours to earn $1000 net?', a: "Focus on Net Profit per Hour. If you earn $25 gross but $15 net, you need 67 hours, not 40. This tool reveals that reality." } ],
-  house: [ { q: 'Can I use gig income for a mortgage?', a: "Lenders look at the 'Net Profit' on your Line 31 of Schedule C. They take the 2-year average. High mileage deductions lower your tax but also lower your qualifying income." } ]
+  goal: [ { q: 'Quarterly Taxes?', a: "If you expect to owe more than $1,000 in taxes when you file, the IRS requires quarterly estimated payments to avoid penalties." } ],
+  house: [ { q: 'Mortgage for Gig Workers?', a: "Lenders look at Line 31 (Net Profit) of your Schedule C. Huge mileage deductions save you tax money but lower the income you can show to a bank for a loan." } ]
 };
 
 const PLATFORM_GUIDES: any = {
   uber: {
-    title: "Uber/Lyft Tax & Profit Strategy",
-    content: "Don't just track 'Online Miles'. To maximize deductions, track 'Business Miles' which includes driving to a hot zone or returning from a drop-off. If your Net Profit > $400, you must file Schedule C. Use this tool to see if you hit that threshold.",
-    tags: ["#ScheduleC", "#QuarterlyTax", "#DeadheadMiles", "#Prop22"]
+    title: "Uber/Lyft Tax Strategy (Audit Proof)",
+    content: "IRS Red Flag: Claiming 100% of miles as business. Commuting from home to the first ride is usually NOT deductible. Only miles between rides and to pickups count. Use a mileage tracker app (like Stride/Gridwise) to create an audit-proof log. Uber's yearly summary is often inaccurate for tax purposes.",
+    tags: ["#ScheduleC", "#AuditProof", "#DeadheadMiles", "#Prop22"]
   },
   doordash: {
-    title: "DoorDash 1099 & Income Thresholds",
-    content: "DoorDash only sends a 1099-NEC if you make over $600. HOWEVER, the IRS requires you to report income if your Net Profit is over $400, even if you don't get a form. Don't fall for the 'I don't need to file' myth.",
-    tags: ["#DasherTax", "#1099NEC", "#WriteOffs", "#MileageTracking"]
+    title: "DoorDash: $400 vs $600 Threshold",
+    content: "DoorDash sends a 1099-NEC only if you earn $600+. BUT, you must report income if profit > $400. Many Dashers get caught by the IRS because they thought 'No 1099 = No Tax'. Don't make that mistake.",
+    tags: ["#DasherTax", "#1099NEC", "#WriteOffs", "#StandardDeduction"]
   },
   amazon: {
-    title: "Amazon Flex & Block Costs",
-    content: "Flex blocks often involve high mileage (80+ miles/block). The Standard Mileage Rate (67¢) often offsets a huge chunk of your Flex income, significantly lowering your tax bill. Always calculate net profit before accepting a Base Pay block.",
-    tags: ["#FlexDriver", "#ScheduleC", "#EstimatedTax", "#BasePay"]
+    title: "Amazon Flex & High Mileage",
+    content: "Amazon Flex routes are often high-mileage. The Standard Mileage Rate (67¢) is usually your best friend here. Actual expenses (gas receipts) rarely beat the standard deduction for Flex drivers unless you drive a gas-guzzling truck.",
+    tags: ["#FlexDriver", "#MileageRate", "#EstimatedTax", "#BasePay"]
   }
 };
 
@@ -173,7 +173,7 @@ export default function Page() {
   const [profitPerMile, setProfitPerMile] = useState(0);
   const [payPerOrder, setPayPerOrder] = useState(0);
   const [deduction, setDeduction] = useState(0);
-  const [taxLiability, setTaxLiability] = useState(0); // New State for Tax
+  const [taxLiability, setTaxLiability] = useState(0); // SE Tax
   
   // Advanced & Settings
   const [targetMoney, setTargetMoney] = useState<string>('');
@@ -232,10 +232,11 @@ export default function Page() {
     // Tax Logic Update based on Reddit
     // SE Tax starts if Net Profit > $400
     const taxableNet = Math.max(0, net - (mi * IRS_RATE));
-    const estimatedTax = taxableNet * 0.153; // SE Tax approx
-    setTaxLiability(parseFloat(estimatedTax.toFixed(2)));
+    const seTaxBase = taxableNet * 0.9235;
+    const estimatedSETax = seTaxBase * 0.153;
+    setTaxLiability(parseFloat(estimatedSETax.toFixed(2)));
 
-    // House & Savings Calc (Existing Logic)
+    // House & Savings Calc
     const price = parseFloat(homePrice) || 0;
     const downPercent = parseFloat(downPayment) || 0;
     const rate = parseFloat(interestRate) || 0;
@@ -313,6 +314,13 @@ export default function Page() {
                   {netProfit > 400 && (
                     <div className="inline-block bg-red-500/20 border border-red-500/50 rounded-lg px-3 py-1 mb-3">
                       <p className="text-[10px] font-bold text-red-200 flex items-center gap-1">⚠️ IRS: Must File Schedule C ($400+)</p>
+                    </div>
+                  )}
+                  {/* [NEW] SE Tax Display Line Item */}
+                  {netProfit > 400 && (
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-bold text-red-400">Est. SE Tax (15.3%):</span>
+                      <span className="text-lg font-bold text-red-400">-${taxLiability.toFixed(2)}</span>
                     </div>
                   )}
 
