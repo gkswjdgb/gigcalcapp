@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-// --- [Icons & Components] ---
-
+// --- [Icons] ---
 const Icons = {
   Profit: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> ),
   Shield: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg> ),
@@ -22,96 +21,62 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [Content Data for SEO/AdSense] ---
+// --- [SEO/GEO Content Update based on Reddit Research] ---
 
 const FAQ_DATA: any = {
   profit: [
-    { q: 'How do I calculate true profit for Uber Eats?', a: "To find your true Net Income, subtract your vehicle expenses (gas, depreciation, maintenance) from your total app payout. This calculator uses the IRS mileage rate or your actual MPG to reveal your 'Real Hourly Wage'." },
-    { q: 'What is a good profit per mile?', a: "Aim for at least $1.50 to $2.00 per mile. If your 'Profit Per Mile' is below $1.00, you are likely losing money on vehicle wear and tear." }
+    { q: 'When do I have to file taxes (The $400 Rule)?', a: "Common myth: 'I made under $600 so I don't need to file.' REALITY: If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%). Don't ignore this!" },
+    { q: 'Do I need to pay quarterly taxes?', a: "The IRS requires quarterly estimated payments if you expect to owe more than $1,000 in taxes for the year. Use this calculator to check your estimated tax liability." }
   ],
   safe: [
-    { q: 'How much should I save for taxes (1099)?', a: 'As an independent contractor, save 15-20% of your Net Profit (not gross) for taxes. Our tool calculates this Safe-to-Spend amount automatically.' },
-    { q: 'Why do I need a repair fund?', a: "Gig driving puts 3x more stress on cars. Saving $0.05-$0.08 per mile ensures you can pay for tires and brakes without debt." }
+    { q: 'Standard Mileage vs Actual Expenses?', a: 'For 90% of gig drivers, the Standard Mileage Deduction (67¢/mile) saves more money and is easier to track than collecting gas receipts. You usually cannot switch back to standard mileage if you start with actual expenses.' },
+    { q: 'How much to save for taxes?', a: "A safe rule is 20-25% of your PROFIT (not gross pay). This covers both Self-Employment Tax (Social Security/Medicare) and Income Tax." }
   ],
   tax: [
-    { q: 'What is the 2024/2025 IRS Mileage Rate?', a: 'For 2024, the rate is 67 cents/mile. This acts as a massive Tax Shield. Driving 100 miles reduces your taxable income by $67.' },
-    { q: 'Can I deduct gas and mileage?', a: "Usually, you must choose one: Standard Mileage Rate (recommended for most) or Actual Expenses. You cannot deduct both." }
+    { q: 'Does Uber/DoorDash take out taxes?', a: 'No. As a 1099 contractor, YOU are the business. No taxes are withheld. You must calculate and pay them yourself.' },
+    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This lowers your INCOME TAX, but it does NOT lower your SELF-EMPLOYMENT TAX. You still owe SE tax on profits over $400." }
   ],
-  goal: [ { q: 'How many hours to reach $1000?', a: "Divide your target by your 'Real Hourly Wage'. If you make $20/hr net, you need 50 hours of driving." } ],
-  house: [ { q: 'Can gig workers buy a house?', a: "Yes, but lenders look at your Net Profit on tax returns (Schedule C), not the gross app earnings. Use this tool to see your qualifying income." } ]
+  goal: [ { q: 'How many hours to earn $1000 net?', a: "Focus on Net Profit per Hour. If you earn $25 gross but $15 net, you need 67 hours, not 40. This tool reveals that reality." } ],
+  house: [ { q: 'Can I use gig income for a mortgage?', a: "Lenders look at the 'Net Profit' on your Line 31 of Schedule C. They take the 2-year average. High mileage deductions lower your tax but also lower your qualifying income." } ]
 };
 
-// [NEW] Platform Specific Deep-Dive Content (To satisfy "High Quality Content" policy)
 const PLATFORM_GUIDES: any = {
   uber: {
-    title: "Uber Eats & Rideshare Strategy",
-    content: "For Uber drivers, the biggest hidden cost is 'Deadhead Miles' (driving without a passenger/order). Uber's app only tracks miles while on a trip, but for tax purposes, you should track ALL business miles from the moment you leave home. This calculator helps you account for the return trip to stay profitable.",
-    tags: ["#Prop22", "#SurgePricing", "#QuestBonus", "#DeadheadMiles"]
+    title: "Uber/Lyft Tax & Profit Strategy",
+    content: "Don't just track 'Online Miles'. To maximize deductions, track 'Business Miles' which includes driving to a hot zone or returning from a drop-off. If your Net Profit > $400, you must file Schedule C. Use this tool to see if you hit that threshold.",
+    tags: ["#ScheduleC", "#QuarterlyTax", "#DeadheadMiles", "#Prop22"]
   },
   doordash: {
-    title: "DoorDash Dasher Profitability",
-    content: "DoorDash offers 'Earn by Time' vs 'Earn by Offer'. While 'Time' guarantees a rate, it often sends you to far, low-tip areas. Experienced Dashers use 'Earn by Offer' and aim for $2/mile to cover start-stop wear. Use this tool to verify if a $5 order for 3 miles is actually worth starting your car.",
-    tags: ["#TopDasher", "#RedCard", "#EarnByTime", "#DasherDirect"]
+    title: "DoorDash 1099 & Income Thresholds",
+    content: "DoorDash only sends a 1099-NEC if you make over $600. HOWEVER, the IRS requires you to report income if your Net Profit is over $400, even if you don't get a form. Don't fall for the 'I don't need to file' myth.",
+    tags: ["#DasherTax", "#1099NEC", "#WriteOffs", "#MileageTracking"]
   },
   amazon: {
-    title: "Amazon Flex Block Valuation",
-    content: "Amazon Flex blocks (e.g., $90 for 4 hours) look high-paying, but mileage can be brutal (often 80+ miles). Always input your estimated block mileage here BEFORE accepting a reserve block. If your Real Hourly Wage drops below $15 after gas, it might be better to wait for a Surge Block.",
-    tags: ["#FlexBlocks", "#WholeFoods", "#SurgePay", "#IndependentContractor"]
+    title: "Amazon Flex & Block Costs",
+    content: "Flex blocks often involve high mileage (80+ miles/block). The Standard Mileage Rate (67¢) often offsets a huge chunk of your Flex income, significantly lowering your tax bill. Always calculate net profit before accepting a Base Pay block.",
+    tags: ["#FlexDriver", "#ScheduleC", "#EstimatedTax", "#BasePay"]
   }
 };
 
 const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   const [platform, setPlatform] = useState('uber');
-
-  // Schema Markup for SEO & Trust
+  
+  // SEO Schemas
   const schemas = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'SoftwareApplication',
-      name: 'GigCalc',
-      applicationCategory: 'FinanceApplication',
-      operatingSystem: 'Web Browser',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'GigCalc US',
-      url: 'https://gigcalcapp.com',
-      logo: 'https://gigcalcapp.com/favicon.ico',
-      description: 'Free financial calculator and tax tools for US gig economy workers.'
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      name: 'How to Calculate Real Hourly Wage for Uber & DoorDash',
-      description: 'Learn how to calculate your true net profit after gas and depreciation.',
-      step: [
-        { '@type': 'HowToStep', name: 'Enter Total Payout', text: 'Input your total earnings from the driver app.', url: 'https://gigcalcapp.com' },
-        { '@type': 'HowToStep', name: 'Input Miles & Hours', text: 'Enter the total miles driven and hours worked during the shift.', url: 'https://gigcalcapp.com' },
-        { '@type': 'HowToStep', name: 'Check Real Wage', text: 'GigCalc automatically subtracts gas and wear & tear to show your actual hourly profit.', url: 'https://gigcalcapp.com' }
-      ]
-    }
+    { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'GigCalc', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } },
+    { '@context': 'https://schema.org', '@type': 'Organization', name: 'GigCalc US', url: 'https://gigcalcapp.com', logo: 'https://gigcalcapp.com/favicon.ico' },
+    { '@context': 'https://schema.org', '@type': 'HowTo', name: 'Calculate Gig Tax & Profit', step: [{ '@type': 'HowToStep', name: 'Input Earnings' }, { '@type': 'HowToStep', name: 'Input Mileage' }, { '@type': 'HowToStep', name: 'Check Tax Liability' }] }
   ];
-
-  const faqs = FAQ_DATA[activeTab] || [];
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
-  };
+  const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ_DATA[activeTab]?.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) || [] };
 
   return (
     <div className="px-6 py-8 bg-slate-50 border-t border-slate-200">
-      {schemas.map((schema, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      ))}
+      {schemas.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      {/* FAQ Section */}
-      <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> FAQ & Tips</h3>
+      <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> Expert FAQ (Reddit Answered)</h3>
       <div className="space-y-6 text-slate-600 mb-10">
-        {faqs.map((item: any, index: number) => (
+        {FAQ_DATA[activeTab]?.map((item: any, index: number) => (
           <article key={index} className="animate-fade-in-up">
             <h4 className="text-xs font-bold text-slate-800 mb-1">{item.q}</h4>
             <p className="text-[11px] leading-relaxed opacity-90">{item.a}</p>
@@ -119,11 +84,8 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
         ))}
       </div>
 
-      {/* [NEW] Platform Guides Section (Content Booster) */}
       <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm animate-fade-in-up">
-        <h3 className="text-sm font-bold text-slate-900 mb-3">📚 Platform Guide</h3>
-        <p className="text-[10px] text-slate-400 mb-3">Select your app for specific strategies:</p>
-        
+        <h3 className="text-sm font-bold text-slate-900 mb-3">📚 Platform Specific Tax Guide</h3>
         <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide pb-1">
           {Object.keys(PLATFORM_GUIDES).map((key) => (
             <button key={key} onClick={() => setPlatform(key)} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors ${platform === key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
@@ -131,7 +93,6 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
             </button>
           ))}
         </div>
-
         <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
           <h4 className="text-xs font-bold text-blue-600 mb-2">{PLATFORM_GUIDES[platform].title}</h4>
           <p className="text-[11px] text-slate-600 leading-relaxed mb-3">{PLATFORM_GUIDES[platform].content}</p>
@@ -146,8 +107,7 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   );
 };
 
-// --- [Modals & Banners] ---
-
+// --- [Modals] ---
 const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) => {
   if (!isOpen) return null;
   return (
@@ -156,9 +116,8 @@ const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">✕</button>
         <h3 className="text-lg font-bold text-slate-900 mb-1">Send Feedback</h3>
         <form action="https://formspree.io/f/xldqqkdb" method="POST" className="space-y-3 mt-4">
-          <textarea name="message" placeholder="Bug report or suggestion?" className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
-          <input type="email" name="email" placeholder="Email (Optional)" className="w-full p-3 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100" />
-          <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200">Send Message 🚀</button>
+          <textarea name="message" placeholder="Suggestions?" className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
+          <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">Send</button>
         </form>
       </div>
     </div>
@@ -171,15 +130,11 @@ const PrivacyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl relative max-h-[80vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">✕</button>
-        <h2 className="text-lg font-bold text-slate-900 mb-4">Privacy Policy & Terms</h2>
-        <div className="text-xs text-slate-600 space-y-4 leading-relaxed">
-          <p><strong>1. Data Collection:</strong> GigCalc.US does not store any personal data entered into the calculator on our servers. All calculations are performed locally on your device.</p>
-          <p><strong>2. Cookies:</strong> We use third-party vendors, including Google, which use cookies to serve ads based on a user's prior visits to this website. We also use Google Analytics.</p>
-          <p><strong>3. User Rights:</strong> Users may opt out of personalized advertising by visiting Google Ads Settings. By using this site, you consent to our use of cookies.</p>
-          <p><strong>4. Disclaimer:</strong> This tool is for informational purposes only. Estimates vary by location and vehicle type.</p>
-          <p className="text-slate-400 mt-6 pt-4 border-t">Last Updated: Dec 2025</p>
+        <h2 className="text-lg font-bold text-slate-900 mb-4">Privacy Policy</h2>
+        <div className="text-xs text-slate-600 space-y-4">
+          <p>GigCalc.US does not store personal data. Calculations are local. We use Google AdSense/Analytics which use cookies.</p>
         </div>
-        <button onClick={onClose} className="w-full mt-6 bg-slate-100 text-slate-900 font-bold py-3 rounded-xl hover:bg-slate-200 transition">Close</button>
+        <button onClick={onClose} className="w-full mt-6 bg-slate-100 text-slate-900 font-bold py-3 rounded-xl">Close</button>
       </div>
     </div>
   );
@@ -191,34 +146,36 @@ const CookieBanner = () => {
   if (!show) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-[90] shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up">
-      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies to improve experience and serve ads. By using this site, you agree to our Privacy Policy.</p>
-      <button onClick={() => { localStorage.setItem('cookieConsent', 'true'); setShow(false); }} className="bg-blue-600 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-blue-700 transition shadow-sm whitespace-nowrap">I Accept</button>
+      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies for ads & analytics. By using this site, you agree to our Privacy Policy.</p>
+      <button onClick={() => { localStorage.setItem('cookieConsent', 'true'); setShow(false); }} className="bg-blue-600 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-blue-700 shadow-sm whitespace-nowrap">I Accept</button>
     </div>
   );
 };
 
-// --- [Main Page Logic] ---
+// --- [Main Page] ---
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState('profit');
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
 
-  // Calculator States
+  // States
   const [income, setIncome] = useState<string>('');
   const [hours, setHours] = useState<string>('');
   const [miles, setMiles] = useState<string>('');
   const [orders, setOrders] = useState<string>('');
   const [gasPrice, setGasPrice] = useState<string>('3.50');
   const [mpg, setMpg] = useState<string>('25');
+  
+  // Results
   const [realWage, setRealWage] = useState(0);
   const [netProfit, setNetProfit] = useState(0);
   const [profitPerMile, setProfitPerMile] = useState(0);
   const [payPerOrder, setPayPerOrder] = useState(0);
-  const IRS_RATE = 0.67;
   const [deduction, setDeduction] = useState(0);
+  const [taxLiability, setTaxLiability] = useState(0); // New State for Tax
   
-  // Advanced States
+  // Advanced & Settings
   const [targetMoney, setTargetMoney] = useState<string>('');
   const [myHourlyWage, setMyHourlyWage] = useState<string>('20');
   const [homePrice, setHomePrice] = useState<string>('300000');
@@ -228,14 +185,7 @@ export default function Page() {
   const [propertyTaxRate, setPropertyTaxRate] = useState<string>('1.2');
   const [isRenting, setIsRenting] = useState(false);
   const [monthlyRent, setMonthlyRent] = useState<string>('2200');
-  const [monthlyPayment, setMonthlyPayment] = useState(0);
-  const [monthlyTax, setMonthlyTax] = useState(0);
-  const [totalMonthlyCost, setTotalMonthlyCost] = useState(0);
-  const [cashFlow, setCashFlow] = useState(0);
-  const [interestDeduction, setInterestDeduction] = useState(0);
-
-  // Safe Spend & Settings
-  const [saveTaxRate, setSaveTaxRate] = useState<string>('15');
+  const [saveTaxRate, setSaveTaxRate] = useState<string>('20'); // Changed default to 20% based on Reddit
   const [saveRepairRate, setSaveRepairRate] = useState<string>('0.08');
   const [saveEmergencyRate, setSaveEmergencyRate] = useState<string>('5');
   const [saveVacationRate, setSaveVacationRate] = useState<string>('3');
@@ -243,13 +193,21 @@ export default function Page() {
   const [useRepair, setUseRepair] = useState(true);
   const [useEmergency, setUseEmergency] = useState(true);
   const [useVacation, setUseVacation] = useState(true);
+  
+  // Savings Results
   const [safeSpendAmount, setSafeSpendAmount] = useState(0);
   const [taxSavings, setTaxSavings] = useState(0);
   const [repairSavings, setRepairSavings] = useState(0);
   const [emergencySavings, setEmergencySavings] = useState(0);
   const [vacationSavings, setVacationSavings] = useState(0);
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  const [monthlyTax, setMonthlyTax] = useState(0);
+  const [totalMonthlyCost, setTotalMonthlyCost] = useState(0);
+  const [cashFlow, setCashFlow] = useState(0);
+  const [interestDeduction, setInterestDeduction] = useState(0);
 
-  // Calculation Effect
+  const IRS_RATE = 0.67;
+
   useEffect(() => {
     const inc = parseFloat(income) || 0;
     const hrs = parseFloat(hours) || 1;
@@ -271,7 +229,13 @@ export default function Page() {
     setDeduction(parseFloat((mi * IRS_RATE).toFixed(2)));
     if (wage > 0) setMyHourlyWage(wage.toFixed(2));
 
-    // House Calc
+    // Tax Logic Update based on Reddit
+    // SE Tax starts if Net Profit > $400
+    const taxableNet = Math.max(0, net - (mi * IRS_RATE));
+    const estimatedTax = taxableNet * 0.153; // SE Tax approx
+    setTaxLiability(parseFloat(estimatedTax.toFixed(2)));
+
+    // House & Savings Calc (Existing Logic)
     const price = parseFloat(homePrice) || 0;
     const downPercent = parseFloat(downPayment) || 0;
     const rate = parseFloat(interestRate) || 0;
@@ -289,10 +253,8 @@ export default function Page() {
     setCashFlow(rent - (mortgage + taxMonthly));
     setInterestDeduction(loanPrincipal * (rate / 100));
 
-    // Wallet Calc
     const repairFund = useRepair ? mi * (parseFloat(saveRepairRate) || 0) : 0;
-    const taxableIncome = Math.max(0, net - (mi * IRS_RATE));
-    const taxFund = useTax ? taxableIncome * ((parseFloat(saveTaxRate) || 15) / 100) : 0;
+    const taxFund = useTax ? taxableNet * ((parseFloat(saveTaxRate) || 20) / 100) : 0;
     const emergencyFund = useEmergency ? net * ((parseFloat(saveEmergencyRate) || 5) / 100) : 0;
     const vacationFund = useVacation ? net * ((parseFloat(saveVacationRate) || 3) / 100) : 0;
     
@@ -308,12 +270,10 @@ export default function Page() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex justify-center pt-0 sm:pt-6">
       <div className="w-full max-w-[480px] bg-white sm:min-h-[800px] sm:h-auto sm:rounded-[2rem] sm:shadow-2xl sm:border border-slate-100 flex flex-col relative overflow-hidden">
         
-        {/* Header */}
         <header className="px-6 py-5 bg-white flex items-center justify-center sticky top-0 z-50 border-b border-slate-50">
           <h1 className="text-xl font-black text-slate-900 tracking-tighter">Gig<span className="text-blue-600">Calc</span>.US</h1>
         </header>
 
-        {/* Tab Navigation */}
         <div className="px-4 py-3 bg-white">
           <div className="flex p-1.5 bg-slate-100 rounded-2xl overflow-x-auto scrollbar-hide">
             {[{ id: 'profit', label: 'Driver', icon: Icons.Profit }, { id: 'safe', label: 'Wallet', icon: Icons.Wallet }, { id: 'tax', label: 'Shield', icon: Icons.Shield }, { id: 'goal', label: 'Goal', icon: Icons.Target }, { id: 'house', label: 'House', icon: Icons.House }].map((tab) => (
@@ -327,12 +287,12 @@ export default function Page() {
         <main className="flex-1 overflow-y-auto scrollbar-hide">
           <div className="px-6 py-2 pb-6">
             
-            {/* --- TAB: PROFIT --- */}
+            {/* PROFIT TAB */}
             {activeTab === 'profit' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Driver Profit Calc</h2><p className="text-xs text-slate-500 mt-1">For Uber Eats, DoorDash, Flex Drivers</p></div>
                 <div className="mb-8">
-                  <label className="text-base font-black text-slate-700 uppercase tracking-tight mb-3 block">Total App Payout (Gross Income)</label>
+                  <label className="text-base font-black text-slate-700 uppercase tracking-tight mb-3 block">Total App Payout (Gross)</label>
                   <div className="flex items-center bg-slate-50 rounded-2xl px-5 py-5 focus-within:ring-2 ring-blue-500/20 transition-all border border-slate-100 shadow-inner">
                     <span className="text-3xl font-bold text-blue-600 mr-2">$</span>
                     <input type="number" value={income} onChange={(e) => setIncome(e.target.value)} placeholder="0.00" className="w-full bg-transparent text-5xl font-black text-slate-900 outline-none placeholder-slate-200" />
@@ -340,13 +300,22 @@ export default function Page() {
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="col-span-1"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Hours</label><input type="number" value={hours} onChange={(e) => setHours(e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none" /></div>
-                  <div className="col-span-2"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Miles (Active or Total) ⓘ</label><input type="number" value={miles} onChange={(e) => setMiles(e.target.value)} placeholder="Check app" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none border-2 border-blue-50/50 focus:border-blue-100" /></div>
+                  <div className="col-span-2"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Miles (Active + Return) ⓘ</label><input type="number" value={miles} onChange={(e) => setMiles(e.target.value)} placeholder="Check app" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none border-2 border-blue-50/50 focus:border-blue-100" /></div>
                 </div>
                 <div className="mt-4"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Total Orders (Optional)</label><input type="number" value={orders} onChange={(e) => setOrders(e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none" /></div>
                 <details className="group mt-4"><summary className="list-none flex items-center justify-between text-xs font-bold text-slate-400 cursor-pointer py-3 px-2 hover:bg-slate-50 rounded-lg transition"><span>Vehicle Expenses (Gas & Mileage)</span><span className="group-open:rotate-180 transition text-slate-300">▼</span></summary><div className="grid grid-cols-2 gap-4 mt-2 bg-slate-50 p-4 rounded-2xl"><div><label className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label><input type="number" value={gasPrice} onChange={(e) => setGasPrice(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div><div><label className="text-[10px] font-bold text-slate-400 uppercase">Gas Mileage</label><input type="number" value={mpg} onChange={(e) => setMpg(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /><p className="text-[9px] text-slate-400 mt-1 text-right">Miles per Gallon</p></div></div></details>
+                
                 <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
                   <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Real Net Profit (Take Home)</p>
                   <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">${netProfit > 0 ? netProfit.toFixed(2) : '0.00'}</div>
+                  
+                  {/* [NEW] Tax Alert Badge */}
+                  {netProfit > 400 && (
+                    <div className="inline-block bg-red-500/20 border border-red-500/50 rounded-lg px-3 py-1 mb-3">
+                      <p className="text-[10px] font-bold text-red-200 flex items-center gap-1">⚠️ IRS: Must File Schedule C ($400+)</p>
+                    </div>
+                  )}
+
                   <div className="flex items-center gap-2 mb-4 opacity-80"><span className="text-xs font-bold text-slate-300">Hourly Wage:</span><span className="text-xl font-bold text-white">${realWage > 0 ? realWage : '0.00'}/hr</span></div>
                   <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4"><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Profit Per Mile</p><p className={`text-xl font-extrabold ${profitPerMile < 1.0 ? 'text-yellow-400' : 'text-white'}`}>${profitPerMile.toFixed(2)} <span className="text-xs font-medium opacity-50">/mi</span></p></div><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Pay Per Order</p><p className="text-xl font-extrabold text-white">${payPerOrder.toFixed(2)} <span className="text-xs font-medium opacity-50">/avg</span></p></div></div>
                 </div>
@@ -354,26 +323,50 @@ export default function Page() {
               </div>
             )}
 
-            {/* --- TAB: SAFE SPEND --- */}
+            {/* SAFE SPEND TAB (With Tax Liability Logic) */}
             {activeTab === 'safe' && (
               <div className="animate-fade-in-up">
-                <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Your Smart Wallet</h2><p className="text-xs text-slate-500 mt-1">Customize your savings.</p></div>
+                <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Your Smart Wallet</h2><p className="text-xs text-slate-500 mt-1">Don't let tax season surprise you.</p></div>
                 <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6"><p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest mb-1">Today's "Safe to Spend"</p><div className="text-6xl font-black tracking-tighter mb-2">${safeSpendAmount > 0 ? safeSpendAmount.toFixed(2) : '0.00'}</div><p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p></div>
+                
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-3">
-                  <div className="flex justify-between items-center pb-3 border-b border-slate-100"><span className="text-xs font-bold text-slate-900">Net Profit</span><span className="text-sm font-black text-slate-900">${netProfit.toFixed(2)}</span></div>
-                  <div className="space-y-3">
+                  <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                    <span className="text-xs font-bold text-slate-900">Net Profit</span>
+                    <span className="text-sm font-black text-slate-900">${netProfit.toFixed(2)}</span>
+                  </div>
+                  
+                  {/* [NEW] Tax Logic Display */}
+                  {useTax && (
+                    <div className="flex items-center justify-between p-2 bg-blue-50 rounded-xl border border-blue-100">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <div>
+                          <p className="text-xs font-bold text-blue-800">Estimated Tax Bill</p>
+                          <p className="text-[9px] text-blue-500">SE Tax (~15.3%) + Income Tax</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-sm font-bold text-blue-600">-${taxSavings.toFixed(2)}</span>
+                        {/* Quarterly Tax Warning */}
+                        {(taxSavings * 260) > 1000 && ( // Assuming 260 working days, rough estimate
+                           <p className="text-[8px] text-red-500 font-bold mt-1">May need Quarterly Pay!</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-3 pt-2">
                     {useRepair && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-orange-400"></span><div><p className="text-xs font-bold text-slate-700">Car Repair Fund</p><p className="text-[10px] text-slate-400">Tires, Oil (${saveRepairRate}/mi)</p></div></div><span className="text-sm font-bold text-orange-500">-${repairSavings.toFixed(2)}</span></div>)}
-                    {useTax && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-blue-400"></span><div><p className="text-xs font-bold text-slate-700">Tax Savings</p><p className="text-[10px] text-slate-400">IRS Bill ({saveTaxRate}%)</p></div></div><span className="text-sm font-bold text-blue-500">-${taxSavings.toFixed(2)}</span></div>)}
                     {useEmergency && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-400"></span><div><p className="text-xs font-bold text-slate-700">Emergency Fund</p><p className="text-[10px] text-slate-400">Sick Day ({saveEmergencyRate}%)</p></div></div><span className="text-sm font-bold text-red-500">-${emergencySavings.toFixed(2)}</span></div>)}
                     {useVacation && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-purple-400"></span><div><p className="text-xs font-bold text-slate-700">Vacation Fund</p><p className="text-[10px] text-slate-400">PTO ({saveVacationRate}%)</p></div></div><span className="text-sm font-bold text-purple-500">-${vacationSavings.toFixed(2)}</span></div>)}
                   </div>
                 </div>
-                <details className="group mt-4 bg-slate-50 rounded-2xl border border-slate-100"><summary className="flex items-center justify-between p-4 cursor-pointer"><span className="text-xs font-bold text-slate-500">Customize Funds (On/Off)</span><span className="text-slate-400 text-xs transition group-open:rotate-180">▼</span></summary><div className="px-4 pb-4 space-y-4"><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useRepair} onChange={(e) => setUseRepair(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Car Repair ($/mi)</label></div><input type="number" step="0.01" value={saveRepairRate} onChange={(e) => setSaveRepairRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useTax} onChange={(e) => setUseTax(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Tax (%)</label></div><input type="number" value={saveTaxRate} onChange={(e) => setSaveTaxRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div></div></details>
+                <details className="group mt-4 bg-slate-50 rounded-2xl border border-slate-100"><summary className="flex items-center justify-between p-4 cursor-pointer"><span className="text-xs font-bold text-slate-500">Customize Funds (On/Off)</span><span className="text-slate-400 text-xs transition group-open:rotate-180">▼</span></summary><div className="px-4 pb-4 space-y-4"><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useRepair} onChange={(e) => setUseRepair(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Car Repair ($/mi)</label></div><input type="number" step="0.01" value={saveRepairRate} onChange={(e) => setSaveRepairRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useTax} onChange={(e) => setUseTax(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Tax (%)</label></div><input type="number" value={saveTaxRate} onChange={(e) => setSaveTaxRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useEmergency} onChange={(e) => setUseEmergency(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Sick Fund (%)</label></div><input type="number" value={saveEmergencyRate} onChange={(e) => setSaveEmergencyRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useVacation} onChange={(e) => setUseVacation(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Vacation (%)</label></div><input type="number" value={saveVacationRate} onChange={(e) => setSaveVacationRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div></div></details>
                 <AdSlot />
               </div>
             )}
 
-            {/* --- TAB: TAX SHIELD --- */}
+            {/* Other Tabs: Tax, Goal, House (Standard) */}
             {activeTab === 'tax' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Tax Shield</h2><p className="text-xs text-slate-500 mt-1">IRS Deduction: <b>67¢ / mile</b></p></div>
@@ -382,8 +375,6 @@ export default function Page() {
                 <AdSlot />
               </div>
             )}
-
-            {/* --- TAB: GOAL --- */}
             {activeTab === 'goal' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Shift Planner</h2><p className="text-xs text-slate-500 mt-1">How long to reach your goal?</p></div>
@@ -392,8 +383,6 @@ export default function Page() {
                 <AdSlot />
               </div>
             )}
-
-            {/* --- TAB: HOUSE --- */}
             {activeTab === 'house' && (
               <div className="animate-fade-in-up">
                 <div className="text-center mb-4 pt-2"><h2 className="text-lg font-bold text-slate-900">Home Buying Calc 🏠</h2><p className="text-xs text-slate-500 mt-1">Live in it? Or Rent it out?</p></div>
@@ -415,7 +404,6 @@ export default function Page() {
             )}
           </div>
 
-          {/* DYNAMIC CONTENT SECTION (SEO/GEO BOOST) */}
           <DynamicContent activeTab={activeTab} />
 
           {/* Footer Area with Privacy Policy Link */}
