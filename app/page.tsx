@@ -21,40 +21,39 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [SEO/GEO Content Update] ---
+// --- [SEO/GEO Content Update based on Reddit Research] ---
 
 const FAQ_DATA: any = {
   profit: [
-    { q: 'When do I have to file taxes (The $400 Rule)?', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This applies even if you are a student or part-timer." },
-    { q: 'Is State Tax included here?', a: "No. This tool calculates Federal Income Tax and Self-Employment Tax. State tax varies wildly (e.g., CA/NY have high taxes, while TX/FL/WA have 0% state income tax)." }
+    { q: 'Is there "No Tax on Tips" law in 2025/2026?', a: "No. While politicians discussed eliminating tax on tips, it has NOT become law yet. As of 2026, the IRS still considers 100% of tips as taxable income. You must report them to avoid penalties." },
+    { q: 'The $400 Rule (Schedule C)', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." }
   ],
   safe: [
-    { q: 'How do I prove my mileage to the IRS?', a: "You need a compliant mileage log (date, miles, purpose). 'Aimless driving' with the app on doesn't count. Driving from home to your first pickup is usually 'commuting' (not deductible) unless you have a home office." },
-    { q: 'Should I buy TurboTax?', a: "If you made less than $1,000, paying $100+ for software might not be worth it. Look for 'Free File' options like FreeTaxUSA which support Schedule C for free or low cost." }
+    { q: 'Can I deduct Gas AND Mileage?', a: 'NO. You generally must choose ONE: Standard Mileage Rate (67¢/mile) OR Actual Expenses (gas, repairs, insurance). You cannot double-dip. For most drivers, the Mileage Rate saves more money.' },
+    { q: 'How to survive an IRS Audit?', a: "The burden of proof is on YOU. 'Aimless driving' doesn't count. Use a mileage tracking app (like Stride or Gridwise) to log every trip. Uber's summary log is often insufficient for an audit." }
   ],
   tax: [
-    // [NEW] Student/Dependent FAQ Added Here ▼
-    { q: 'I am a student / dependent. Do I file?', a: 'YES. Even if your parents claim you as a dependent, if your Gig Net Profit is over $400, you MUST file your own tax return to pay the 15.3% Self-Employment Tax. Being a student does not exempt you from this.' },
-    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This deduction lowers your Income Tax, but it DOES NOT lower your Self-Employment Tax (Social Security/Medicare)." }
+    { q: 'I am a student / dependent. Do I file?', a: 'YES. Even if your parents claim you as a dependent, if your Gig Net Profit is over $400, you MUST file your own tax return to pay the 15.3% SE Tax. Being a student does not exempt you from this.' },
+    { q: 'Quarterly Taxes (1040-ES)?', a: "If you expect to owe more than $1,000 in taxes when you file, the IRS requires quarterly estimated payments to avoid underpayment penalties." }
   ],
-  goal: [ { q: 'Quarterly Taxes?', a: "If you expect to owe more than $1,000 in taxes when you file, the IRS requires quarterly estimated payments to avoid penalties." } ],
+  goal: [ { q: 'How many hours to earn $1000 net?', a: "Focus on Net Profit per Hour. If you earn $25 gross but $15 net, you need 67 hours, not 40. This tool reveals that reality." } ],
   house: [ { q: 'Mortgage for Gig Workers?', a: "Lenders look at Line 31 (Net Profit) of your Schedule C. Huge mileage deductions save you tax money but lower the income you can show to a bank for a loan." } ]
 };
 
 const PLATFORM_GUIDES: any = {
   uber: {
-    title: "Uber/Lyft Tax Strategy (Audit Proof)",
-    content: "IRS Red Flag: Claiming 100% of miles as business. Commuting from home to the first ride is usually NOT deductible. Only miles between rides and to pickups count. Use a mileage tracker app (like Stride/Gridwise) to create an audit-proof log. Uber's yearly summary is often inaccurate for tax purposes.",
-    tags: ["#ScheduleC", "#AuditProof", "#DeadheadMiles", "#Prop22"]
+    title: "Uber/Lyft: Audit Proofing & Deadhead Miles",
+    content: "IRS Red Flag: Claiming 100% of total miles. Commuting from home to the first ride is usually NOT deductible. Only miles between rides and to pickups count. Don't rely on Uber's year-end summary; it often misses 'deadhead' miles (driving back from a drop-off). Track it yourself.",
+    tags: ["#AuditRisk", "#DeadheadMiles", "#ScheduleC", "#QuarterlyTax"]
   },
   doordash: {
-    title: "DoorDash: $400 vs $600 Threshold",
-    content: "DoorDash sends a 1099-NEC only if you earn $600+. BUT, you must report income if profit > $400. Many students get caught by the IRS because they thought 'No 1099 = No Tax'. Don't make that mistake.",
-    tags: ["#DasherTax", "#1099NEC", "#WriteOffs", "#StandardDeduction"]
+    title: "DoorDash: The 'No Tax on Tips' Myth",
+    content: "Current Law Alert: Tips are fully taxable. DoorDash only sends a 1099-NEC if you make over $600, but you must report income if profit > $400. Don't get caught by the IRS thinking small amounts don't matter.",
+    tags: ["#TaxOnTips", "#DasherTax", "#StudentTax", "#StandardDeduction"]
   },
   amazon: {
-    title: "Amazon Flex & High Mileage",
-    content: "Amazon Flex routes are often high-mileage. The Standard Mileage Rate (67¢) is usually your best friend here. Actual expenses (gas receipts) rarely beat the standard deduction for Flex drivers unless you drive a gas-guzzling truck.",
+    title: "Amazon Flex: High Mileage Strategy",
+    content: "Amazon Flex blocks often involve high mileage (80+ miles/block). The Standard Mileage Rate (67¢) acts as a massive tax shield here. Actual expenses (gas receipts) rarely beat the standard deduction for Flex drivers unless you drive a heavy truck.",
     tags: ["#FlexDriver", "#MileageRate", "#EstimatedTax", "#BasePay"]
   }
 };
@@ -419,7 +418,10 @@ export default function Page() {
           {/* Footer Area with Privacy Policy Link */}
           <div className="px-6 pb-24 text-center border-t border-slate-200 pt-8 bg-slate-100">
             <button onClick={() => setIsFeedbackOpen(true)} className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center justify-center gap-2 mx-auto mb-4 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm transition"><Icons.Mail /> Send Feedback</button>
-            <p className="text-[10px] text-slate-400 leading-relaxed uppercase mb-2"><strong>DISCLAIMER:</strong> Informational only. Consult a pro.</p>
+            <div className="text-[10px] text-slate-400 leading-relaxed mb-4 text-justify px-2">
+              <strong className="block text-slate-500 mb-1 uppercase">Disclaimer & Legal Notice</strong>
+              This tool is provided for <b>informational and educational purposes only</b> and does not constitute professional financial, legal, or tax advice. All calculations are estimates based on user inputs and general 2024-2025 IRS guidelines. We are not responsible for any financial losses or tax penalties. Always consult a certified CPA or tax professional before filing your taxes.
+            </div>
             <p className="text-[10px] text-slate-400 mb-4"><button onClick={() => setIsPrivacyOpen(true)} className="underline hover:text-slate-600">Privacy Policy</button></p>
             <p className="text-[10px] text-slate-300">© {new Date().getFullYear()} GigCalc.US</p>
           </div>
