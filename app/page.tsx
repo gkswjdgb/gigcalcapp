@@ -21,11 +21,11 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [SEO/GEO Content Update based on Reddit Research] ---
+// --- [SEO/GEO Content Update] ---
 
 const FAQ_DATA: any = {
   profit: [
-    { q: 'When do I have to file taxes (The $400 Rule)?', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." },
+    { q: 'When do I have to file taxes (The $400 Rule)?', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This applies even if you are a student or part-timer." },
     { q: 'Is State Tax included here?', a: "No. This tool calculates Federal Income Tax and Self-Employment Tax. State tax varies wildly (e.g., CA/NY have high taxes, while TX/FL/WA have 0% state income tax)." }
   ],
   safe: [
@@ -33,8 +33,9 @@ const FAQ_DATA: any = {
     { q: 'Should I buy TurboTax?', a: "If you made less than $1,000, paying $100+ for software might not be worth it. Look for 'Free File' options like FreeTaxUSA which support Schedule C for free or low cost." }
   ],
   tax: [
-    { q: 'How is Self-Employment Tax calculated?', a: 'It is 15.3% of 92.35% of your Net Profit. You get to deduct the "employer" half of this tax on your 1040 form. This calculator handles that complex math for you.' },
-    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This deduction lowers your Income Tax, but it DOES NOT lower your Self-Employment Tax." }
+    // [NEW] Student/Dependent FAQ Added Here ▼
+    { q: 'I am a student / dependent. Do I file?', a: 'YES. Even if your parents claim you as a dependent, if your Gig Net Profit is over $400, you MUST file your own tax return to pay the 15.3% Self-Employment Tax. Being a student does not exempt you from this.' },
+    { q: 'What is the "Standard Deduction"?', a: "For 2024, the Standard Deduction is $14,600 (Single). This deduction lowers your Income Tax, but it DOES NOT lower your Self-Employment Tax (Social Security/Medicare)." }
   ],
   goal: [ { q: 'Quarterly Taxes?', a: "If you expect to owe more than $1,000 in taxes when you file, the IRS requires quarterly estimated payments to avoid penalties." } ],
   house: [ { q: 'Mortgage for Gig Workers?', a: "Lenders look at Line 31 (Net Profit) of your Schedule C. Huge mileage deductions save you tax money but lower the income you can show to a bank for a loan." } ]
@@ -48,7 +49,7 @@ const PLATFORM_GUIDES: any = {
   },
   doordash: {
     title: "DoorDash: $400 vs $600 Threshold",
-    content: "DoorDash sends a 1099-NEC only if you earn $600+. BUT, you must report income if profit > $400. Many Dashers get caught by the IRS because they thought 'No 1099 = No Tax'. Don't make that mistake.",
+    content: "DoorDash sends a 1099-NEC only if you earn $600+. BUT, you must report income if profit > $400. Many students get caught by the IRS because they thought 'No 1099 = No Tax'. Don't make that mistake.",
     tags: ["#DasherTax", "#1099NEC", "#WriteOffs", "#StandardDeduction"]
   },
   amazon: {
@@ -310,13 +311,13 @@ export default function Page() {
                   <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Real Net Profit (Take Home)</p>
                   <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">${netProfit > 0 ? netProfit.toFixed(2) : '0.00'}</div>
                   
-                  {/* [NEW] Tax Alert Badge */}
+                  {/* Tax Alert Badge */}
                   {netProfit > 400 && (
                     <div className="inline-block bg-red-500/20 border border-red-500/50 rounded-lg px-3 py-1 mb-3">
                       <p className="text-[10px] font-bold text-red-200 flex items-center gap-1">⚠️ IRS: Must File Schedule C ($400+)</p>
                     </div>
                   )}
-                  {/* [NEW] SE Tax Display Line Item */}
+                  {/* SE Tax Display Line Item */}
                   {netProfit > 400 && (
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold text-red-400">Est. SE Tax (15.3%):</span>
@@ -343,7 +344,7 @@ export default function Page() {
                     <span className="text-sm font-black text-slate-900">${netProfit.toFixed(2)}</span>
                   </div>
                   
-                  {/* [NEW] Tax Logic Display */}
+                  {/* Tax Logic Display */}
                   {useTax && (
                     <div className="flex items-center justify-between p-2 bg-blue-50 rounded-xl border border-blue-100">
                       <div className="flex items-center gap-2">
@@ -356,7 +357,7 @@ export default function Page() {
                       <div className="text-right">
                         <span className="text-sm font-bold text-blue-600">-${taxSavings.toFixed(2)}</span>
                         {/* Quarterly Tax Warning */}
-                        {(taxSavings * 260) > 1000 && ( // Assuming 260 working days, rough estimate
+                        {(taxSavings * 260) > 1000 && (
                            <p className="text-[8px] text-red-500 font-bold mt-1">May need Quarterly Pay!</p>
                         )}
                       </div>
@@ -368,6 +369,7 @@ export default function Page() {
                     {useEmergency && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-400"></span><div><p className="text-xs font-bold text-slate-700">Emergency Fund</p><p className="text-[10px] text-slate-400">Sick Day ({saveEmergencyRate}%)</p></div></div><span className="text-sm font-bold text-red-500">-${emergencySavings.toFixed(2)}</span></div>)}
                     {useVacation && (<div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-purple-400"></span><div><p className="text-xs font-bold text-slate-700">Vacation Fund</p><p className="text-[10px] text-slate-400">PTO ({saveVacationRate}%)</p></div></div><span className="text-sm font-bold text-purple-500">-${vacationSavings.toFixed(2)}</span></div>)}
                   </div>
+                  <p className="text-[9px] text-center text-slate-400 mt-2">*State Income Tax not included (varies by location)</p>
                 </div>
                 <details className="group mt-4 bg-slate-50 rounded-2xl border border-slate-100"><summary className="flex items-center justify-between p-4 cursor-pointer"><span className="text-xs font-bold text-slate-500">Customize Funds (On/Off)</span><span className="text-slate-400 text-xs transition group-open:rotate-180">▼</span></summary><div className="px-4 pb-4 space-y-4"><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useRepair} onChange={(e) => setUseRepair(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Car Repair ($/mi)</label></div><input type="number" step="0.01" value={saveRepairRate} onChange={(e) => setSaveRepairRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useTax} onChange={(e) => setUseTax(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Tax (%)</label></div><input type="number" value={saveTaxRate} onChange={(e) => setSaveTaxRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useEmergency} onChange={(e) => setUseEmergency(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Sick Fund (%)</label></div><input type="number" value={saveEmergencyRate} onChange={(e) => setSaveEmergencyRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div><div className="flex items-center justify-between"><div className="flex items-center gap-2"><input type="checkbox" checked={useVacation} onChange={(e) => setUseVacation(e.target.checked)} className="w-4 h-4 text-blue-600 rounded" /><label className="text-xs font-bold text-slate-700">Vacation (%)</label></div><input type="number" value={saveVacationRate} onChange={(e) => setSaveVacationRate(e.target.value)} className="w-16 p-1 bg-white rounded text-center font-bold outline-none text-xs" /></div></div></details>
                 <AdSlot />
