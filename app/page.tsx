@@ -21,12 +21,18 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [SEO/GEO Content Update based on Reddit Research] ---
+// --- [SEO/GEO Content: 100% Reddit/Quora Optimized] ---
 
 const FAQ_DATA: any = {
   profit: [
-    { q: 'Is there "No Tax on Tips" law in 2025/2026?', a: "No. While politicians discussed eliminating tax on tips, it has NOT become law yet. As of 2026, the IRS still considers 100% of tips as taxable income. You must report them to avoid penalties." },
-    { q: 'The $400 Rule (Schedule C)', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." }
+    { 
+      q: 'Does the 2025 "No Tax on Tips" law apply to me?', 
+      a: "BE CAREFUL. The new law only exempts tips from 'Federal Income Tax'. It does NOT exempt you from 'Self-Employment Tax' (15.3%). As a driver, you still owe the 15.3% tax on your tips. This calculator includes that hidden tax to keep you safe from IRS penalties." 
+    },
+    { 
+      q: 'The $400 Rule (Schedule C)', 
+      a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." 
+    }
   ],
   safe: [
     { q: 'Can I deduct Gas AND Mileage?', a: 'NO. You generally must choose ONE: Standard Mileage Rate (67¢/mile) OR Actual Expenses (gas, repairs, insurance). You cannot double-dip. For most drivers, the Mileage Rate saves more money.' },
@@ -48,7 +54,7 @@ const PLATFORM_GUIDES: any = {
   },
   doordash: {
     title: "DoorDash: The 'No Tax on Tips' Myth",
-    content: "Current Law Alert: Tips are fully taxable. DoorDash only sends a 1099-NEC if you make over $600, but you must report income if profit > $400. Don't get caught by the IRS thinking small amounts don't matter.",
+    content: "Current Law Alert: Tips are fully taxable for Self-Employment Tax (15.3%), even if exempt from Income Tax. DoorDash only sends a 1099-NEC if you make over $600, but you must report income if profit > $400. Don't get caught by the IRS thinking small amounts don't matter.",
     tags: ["#TaxOnTips", "#DasherTax", "#StudentTax", "#StandardDeduction"]
   },
   amazon: {
