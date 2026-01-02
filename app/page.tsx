@@ -29,7 +29,7 @@ type InputState = {
   isRenting: boolean;
 };
 
-// --- [Constants] ---
+// --- [Constants & SEO Data] ---
 const INITIAL_STATE: InputState = {
   income: '', hours: '', miles: '', orders: '',
   gasPrice: '3.50', mpg: '25',
@@ -41,14 +41,14 @@ const INITIAL_STATE: InputState = {
 };
 
 const TAB_SEO_INFO: any = {
-  profit: { title: "Driver Profit Calc - GigCalc.US", desc: "Calculate your REAL hourly wage after gas and depreciation. See your true net profit for Uber, Lyft, and DoorDash." },
-  safe: { title: "Tax & Safe Spend - GigCalc.US", desc: "Know exactly how much to save for taxes and how much is safe to spend today. Avoid IRS surprises." },
-  tax: { title: "Mileage Tax Shield - GigCalc.US", desc: "Calculate your 2025 Standard Mileage Deduction. See how much tax you can save by tracking miles." },
-  goal: { title: "Shift Planner - GigCalc.US", desc: "Calculate how many hours you actually need to drive to reach your financial goals based on net profit." },
-  house: { title: "Mortgage Calc - GigCalc.US", desc: "See how your gig income affects your mortgage qualification. Avoid the deduction trap." }
+  profit: { title: "Driver Profit Calc (Net Income) - GigCalc.US", desc: "Calculate Real Hourly Wage & Net Profit for Uber/DoorDash using 2025 IRS Standard Mileage Rates." },
+  safe: { title: "Tax Savings Calculator - GigCalc.US", desc: "Estimate Safe-to-Spend income and 2025 Quarterly Tax payments based on IRS Schedule SE logic." },
+  tax: { title: "Mileage Deduction Calculator - GigCalc.US", desc: "Calculate 2025 tax deductions using the 67 cents/mile Standard Mileage Rate vs Actual Expenses." },
+  goal: { title: "Shift Planner (Net Wage) - GigCalc.US", desc: "Plan your driving shifts based on real net profit per hour, not just gross app earnings." },
+  house: { title: "Gig Worker Mortgage Calc - GigCalc.US", desc: "Calculate mortgage qualification capability based on Schedule C Net Profit (Line 31)." }
 };
 
-// --- [Icons Component] ---
+// --- [Icons Component] (A11y Optimized) ---
 const Icons = {
   Profit: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
   Shield: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
@@ -57,13 +57,12 @@ const Icons = {
   Wallet: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg>,
   Share: () => <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>,
   Mail: () => <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-  ArrowDown: () => <svg aria-hidden="true" className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+  ArrowDown: () => <svg aria-hidden="true" className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>,
+  Check: () => <svg aria-hidden="true" className="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
 };
 
-// --- [Utility Components & Modals] --- 
-// 🚨 여기에 모달 컴포넌트들을 복구했습니다!
-
-const ShareButton = ({ text, value }: { text: string, value: string }) => {
+// --- [Utility Components] ---
+const ShareButton = ({ text }: { text: string }) => {
   const [copied, setCopied] = useState(false);
   const handleShare = async () => {
     const shareText = `${text} Check yours at: https://gigcalcapp.com`;
@@ -76,11 +75,7 @@ const ShareButton = ({ text, value }: { text: string, value: string }) => {
     }
   };
   return (
-    <button 
-      onClick={handleShare} 
-      aria-label="Share your result"
-      className="text-[10px] font-bold text-blue-500 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full hover:bg-blue-100 transition focus:ring-2 focus:ring-blue-300 outline-none"
-    >
+    <button onClick={handleShare} aria-label="Share Result" className="text-[10px] font-bold text-blue-500 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full hover:bg-blue-100 transition focus:ring-2 focus:ring-blue-300 outline-none">
       <Icons.Share /> {copied ? 'Copied!' : 'Share'}
     </button>
   );
@@ -95,6 +90,7 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </aside>
 );
 
+// --- [Modal Components] ---
 const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) => {
   if (!isOpen) return null;
   return (
@@ -133,13 +129,13 @@ const CookieBanner = () => {
   if (!show) return null;
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 z-[90] shadow-2xl flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up">
-      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies for ads & analytics. By using this site, you agree to our Privacy Policy.</p>
+      <p className="text-xs text-slate-600 text-center sm:text-left">🍪 We use cookies for ads & analytics.</p>
       <button onClick={() => { localStorage.setItem('cookieConsent', 'true'); setShow(false); }} className="bg-blue-600 text-white text-xs font-bold px-6 py-2.5 rounded-full hover:bg-blue-700 shadow-sm whitespace-nowrap">I Accept</button>
     </div>
   );
 };
 
-// --- [Custom Hook] ---
+// --- [Custom Hook: Calculation Engine] ---
 const useGigCalculations = (inputs: InputState) => {
   return useMemo(() => {
     const inc = parseFloat(inputs.income) || 0;
@@ -155,7 +151,7 @@ const useGigCalculations = (inputs: InputState) => {
     const totalActualExpenses = fuelCost + wearCost;
     
     const netProfit = inc - totalActualExpenses;
-    const realWage = netProfit / hrs;
+    const realWage = hrs > 0 ? netProfit / hrs : 0;
     const profitPerMile = mi > 0 ? netProfit / mi : 0;
     const payPerOrder = ord > 0 ? inc / ord : 0;
 
@@ -205,22 +201,17 @@ export default function Page() {
 
   useEffect(() => { if (isLoaded) localStorage.setItem('gigCalcData', JSON.stringify(inputs)); }, [inputs, isLoaded]);
 
-  // SEO: Dynamic Title & Meta Description & URL
   useEffect(() => {
     const info = TAB_SEO_INFO[activeTab] || TAB_SEO_INFO['profit'];
     document.title = info.title;
-    
-    // Dynamic Meta Description Update
     let metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', info.desc);
-    } else {
+    if (metaDescription) { metaDescription.setAttribute('content', info.desc); } 
+    else {
       const meta = document.createElement('meta');
       meta.name = "description";
       meta.content = info.desc;
       document.head.appendChild(meta);
     }
-
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('tab', activeTab);
@@ -228,20 +219,11 @@ export default function Page() {
     }
   }, [activeTab]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      url.searchParams.set('guide', platform);
-      window.history.replaceState({}, '', url);
-    }
-  }, [platform]);
-
   const r = useGigCalculations(inputs);
   const handleChange = (field: keyof InputState, value: any) => setInputs(prev => ({ ...prev, [field]: value }));
   const formatCurrency = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
-  const scrollToGuides = () => document.getElementById('guides')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToGuides = () => document.getElementById('methodology')?.scrollIntoView({ behavior: 'smooth' });
 
-  // Data Objects
   const PLATFORM_GUIDES: any = {
     uber: { title: "Uber/Lyft: Audit Proofing", content: "IRS Red Flag: Claiming 100% of miles. Commuting from home to first ride is NOT deductible.", tags: ["#AuditRisk", "#DeadheadMiles", "#ScheduleC"] },
     doordash: { title: "DoorDash: Tip Tax Myth", content: "Current Law: Tips are fully taxable for SE Tax (15.3%), even if exempt from Income Tax.", tags: ["#TaxOnTips", "#DasherTax", "#SE_Tax"] },
@@ -255,12 +237,37 @@ export default function Page() {
     house: [{ q: 'Mortgage Trap', a: "High deductions lower your taxes but also lower your 'Qualifying Income' for loans." }]
   };
 
+  // --- [GEO: Rich JSON-LD Data Injection] ---
+  const geoSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'SoftwareApplication',
+        'name': 'GigCalc',
+        'applicationCategory': 'FinanceApplication',
+        'operatingSystem': 'Web',
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+        'description': 'Free Calculator for Uber, DoorDash, and Lyft drivers to calculate Net Profit, Real Hourly Wage, and Schedule C Tax Liability using 2025 IRS Standard Mileage Rates.'
+      },
+      {
+        '@type': 'FAQPage',
+        'mainEntity': [
+          { '@type': 'Question', 'name': 'What is the 2025 IRS Standard Mileage Rate?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The 2025 IRS Standard Mileage Rate for business use is 67 cents per mile. This rate covers gas, insurance, repairs, and depreciation.' } },
+          { '@type': 'Question', 'name': 'Do DoorDash drivers pay tax on tips?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. While new laws may exempt tips from Federal Income Tax, gig workers must still pay the 15.3% Self-Employment Tax (Social Security & Medicare) on all tip income if net profit exceeds $400.' } },
+          { '@type': 'Question', 'name': 'How do I calculate net profit for Gig Work?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Net Profit = Gross Earnings - (Total Business Miles * $0.67). Do not deduct gas separately if taking the mileage deduction.' } }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex justify-center pt-0 sm:pt-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(geoSchema) }} />
+      
       {/* Semantic Structure: Main Wrapper */}
       <main className="w-full max-w-[480px] bg-white sm:min-h-[800px] sm:h-auto sm:rounded-[2rem] sm:shadow-2xl sm:border border-slate-100 flex flex-col relative overflow-hidden">
         
-        {/* Semantic: Header */}
+        {/* Header */}
         <header className="px-6 py-5 bg-white flex items-center justify-center sticky top-0 z-50 border-b border-slate-50">
           <h1 className="text-xl font-black text-slate-900 tracking-tighter">Gig<span className="text-blue-600">Calc</span>.US</h1>
         </header>
@@ -284,7 +291,6 @@ export default function Page() {
 
         <div className="flex-1 overflow-y-auto scrollbar-hide">
           <div className="px-6 py-2 pb-6">
-            
             {/* === PROFIT SECTION === */}
             {activeTab === 'profit' && (
               <section className="animate-fade-in-up" aria-labelledby="profit-heading">
@@ -322,7 +328,7 @@ export default function Page() {
                 <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Real Net Profit (Take Home)</p>
-                    <ShareButton text={`My Real Hourly Wage is $${r.realWage}/hr on GigCalc!`} value={r.realWage.toString()} />
+                    <ShareButton text={`My Real Hourly Wage is $${r.realWage}/hr on GigCalc!`} />
                   </div>
                   <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">{formatCurrency(r.netProfit > 0 ? r.netProfit : 0)}</div>
                   
@@ -333,14 +339,13 @@ export default function Page() {
                     </>
                   )}
 
-                  <div className="flex items-center gap-2 mb-4 opacity-80"><span className="text-xs font-bold text-slate-300">Hourly Wage:</span><span className="text-xl font-bold text-white">${r.realWage > 0 ? r.realWage : '0.00'}/hr</span></div>
+                  <div className="flex items-center gap-2 mb-4 opacity-80"><span className="text-xs font-bold text-slate-300">Hourly Wage:</span><span className="text-xl font-bold text-white">${r.realWage > 0 ? r.realWage.toFixed(2) : '0.00'}/hr</span></div>
                   <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4">
                     <div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Profit Per Mile</p><p className="text-xl font-extrabold text-white">${r.profitPerMile.toFixed(2)} <span className="text-xs font-medium opacity-50">/mi</span></p></div>
                     <div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Pay Per Order</p><p className="text-xl font-extrabold text-white">${r.payPerOrder.toFixed(2)} <span className="text-xs font-medium opacity-50">/avg</span></p></div>
                   </div>
                 </div>
                 
-                {/* Semantic: Changed div to button for accessibility */}
                 {parseFloat(inputs.income) > 0 && (
                   <button 
                     onClick={scrollToGuides} 
@@ -360,7 +365,7 @@ export default function Page() {
                 <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest">Today's "Safe to Spend"</p>
-                    <ShareButton text={`I can safely spend ${formatCurrency(r.safeSpendAmount)} today!`} value={r.safeSpendAmount.toString()} />
+                    <ShareButton text={`I can safely spend ${formatCurrency(r.safeSpendAmount)} today!`} />
                   </div>
                   <div className="text-6xl font-black tracking-tighter mb-2">{formatCurrency(r.safeSpendAmount > 0 ? r.safeSpendAmount : 0)}</div>
                   <p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p>
@@ -392,7 +397,7 @@ export default function Page() {
                 <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg shadow-blue-200 text-center mb-4">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-blue-200 text-[10px] font-bold uppercase tracking-widest">Calculated Deduction</p>
-                    <ShareButton text={`I found a $${r.deduction} tax shield using GigCalc.US`} value={r.deduction.toString()} />
+                    <ShareButton text={`I found a $${r.deduction} tax shield using GigCalc.US`} />
                   </div>
                   <div className="text-5xl font-black tracking-tighter mb-2">{formatCurrency(r.deduction)}</div>
                   <p className="text-xs font-medium text-blue-100 opacity-90">IRS Standard Deduction Amount</p>
@@ -436,15 +441,17 @@ export default function Page() {
 
           </div>
 
-          {/* Semantic: Article/Section for Guides */}
+          {/* Semantic: Guides Section with Definition Lists for GEO */}
           <section className="px-6 py-8 bg-slate-50 border-t border-slate-200" id="guides" aria-labelledby="guides-heading">
             <h3 id="guides-heading" className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> Expert FAQ (Reddit Answered)</h3>
+            
+            {/* Semantic Definition List for Q&A */}
             <div className="space-y-6 text-slate-600 mb-10">
               {FAQ_DATA[activeTab]?.map((item: any, index: number) => (
-                <article key={index} className="animate-fade-in-up">
-                  <h4 className="text-xs font-bold text-slate-800 mb-1">{item.q}</h4>
-                  <p className="text-[11px] leading-relaxed opacity-90">{item.a}</p>
-                </article>
+                <dl key={index} className="animate-fade-in-up">
+                  <dt className="text-xs font-bold text-slate-800 mb-1">{item.q}</dt>
+                  <dd className="text-[11px] leading-relaxed opacity-90 m-0">{item.a}</dd>
+                </dl>
               ))}
             </div>
             
@@ -474,34 +481,15 @@ export default function Page() {
               </article>
             </div>
 
-            {/* Comparison Table */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-              <h3 className="text-sm font-bold text-slate-900 mb-4">🏆 Standard Deduction vs. Actual Expenses</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr>
-                      <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Method</th>
-                      <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Deductible Items</th>
-                      <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Best For</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-[10px] text-slate-600">
-                    <tr>
-                      <td className="p-2 border-b border-slate-50 font-bold text-blue-600">Standard (67¢/mi)</td>
-                      <td className="p-2 border-b border-slate-50">Mileage only (covers gas, insurance, repairs, depreciation)</td>
-                      <td className="p-2 border-b border-slate-50">95% of Drivers (Prius, Civic, High Mileage)</td>
-                    </tr>
-                    <tr>
-                      <td className="p-2 font-bold text-slate-700">Actual Expenses</td>
-                      <td className="p-2">Gas receipts, Repair bills, Insurance %</td>
-                      <td className="p-2">Low Mileage + Gas Guzzlers / Expensive Repairs</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <p className="text-[9px] text-slate-400 mt-2 text-center">Note: You cannot switch back to Standard if you start with Actual (depreciation rules).</p>
-            </div>
+            {/* GEO Authority: Methodology Section */}
+            <section id="methodology" className="mt-8 pt-6 border-t border-slate-200" aria-labelledby="method-heading">
+                <h3 id="method-heading" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1"><Icons.Shield /> Calculation Methodology</h3>
+                <p className="text-[9px] text-slate-400 leading-relaxed">
+                    This calculator uses the <strong>2025 IRS Standard Mileage Rate (67 cents per mile)</strong> for deduction calculations. 
+                    Self-Employment Tax is calculated based on <strong>Schedule SE (Form 1040)</strong> logic: 15.3% tax on 92.35% of net earnings from self-employment. 
+                    Reference: <a href="https://www.irs.gov/publications/p463" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-500">IRS Publication 463</a>.
+                </p>
+            </section>
           </section>
 
           {/* Semantic: Footer */}
