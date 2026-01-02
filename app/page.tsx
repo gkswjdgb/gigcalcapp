@@ -69,6 +69,17 @@ const PLATFORM_GUIDES: any = {
 const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   const [platform, setPlatform] = useState('uber');
   
+  // SEO Strategy: Dynamic URL Updates
+  useEffect(() => {
+    // This updates the URL query param without reloading the page
+    // Good for tracking which platform guide is active
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('guide', platform);
+      window.history.replaceState({}, '', url);
+    }
+  }, [platform]);
+
   // SEO Schemas
   const schemas = [
     { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'GigCalc', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } },
@@ -92,7 +103,7 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
         ))}
       </div>
 
-      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm animate-fade-in-up">
+      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm animate-fade-in-up mb-8">
         <h3 className="text-sm font-bold text-slate-900 mb-3">📚 Platform Specific Tax Guide</h3>
         <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide pb-1">
           {Object.keys(PLATFORM_GUIDES).map((key) => (
@@ -110,6 +121,35 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* [NEW] GEO-Optimized Comparison Table */}
+      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">🏆 Standard Deduction vs. Actual Expenses</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr>
+                <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Method</th>
+                <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Deductible Items</th>
+                <th className="text-[10px] font-bold text-slate-500 uppercase p-2 border-b border-slate-100">Best For</th>
+              </tr>
+            </thead>
+            <tbody className="text-[10px] text-slate-600">
+              <tr>
+                <td className="p-2 border-b border-slate-50 font-bold text-blue-600">Standard (67¢/mi)</td>
+                <td className="p-2 border-b border-slate-50">Mileage only (covers gas, insurance, repairs, depreciation)</td>
+                <td className="p-2 border-b border-slate-50">95% of Drivers (Prius, Civic, High Mileage)</td>
+              </tr>
+              <tr>
+                <td className="p-2 font-bold text-slate-700">Actual Expenses</td>
+                <td className="p-2">Gas receipts, Repair bills, Insurance %</td>
+                <td className="p-2">Low Mileage + Gas Guzzlers / Expensive Repairs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-[9px] text-slate-400 mt-2 text-center">Note: You cannot switch back to Standard if you start with Actual (depreciation rules).</p>
       </div>
     </div>
   );
@@ -236,6 +276,25 @@ export default function Page() {
 
   const IRS_RATE = 0.67;
 
+  // SEO: Dynamic Title Update
+  useEffect(() => {
+    const tabTitles: any = {
+      profit: "Driver Profit Calc - GigCalc.US",
+      safe: "Tax & Safe Spend - GigCalc.US",
+      tax: "Mileage Tax Shield - GigCalc.US",
+      goal: "Shift Planner - GigCalc.US",
+      house: "Mortgage Calc - GigCalc.US"
+    };
+    document.title = tabTitles[activeTab] || "GigCalc.US - Driver Profit & Tax Tool";
+    
+    // URL Parameter Update
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', activeTab);
+      window.history.replaceState({}, '', url);
+    }
+  }, [activeTab]);
+
   useEffect(() => {
     const inc = parseFloat(income) || 0;
     const hrs = parseFloat(hours) || 1;
@@ -259,10 +318,7 @@ export default function Page() {
     if (wage > 0) setMyHourlyWage(wage.toFixed(2));
 
     // 2. Tax Calculation (IRS Method)
-    // Taxable Income = Gross Income - Standard Mileage Deduction
     const taxableIncomeForTax = Math.max(0, inc - (mi * IRS_RATE));
-    
-    // SE Tax = 15.3% of 92.35% of Taxable Business Income
     const seTaxBase = taxableIncomeForTax * 0.9235;
     const estimatedSETax = seTaxBase * 0.153;
     setTaxLiability(parseFloat(estimatedSETax.toFixed(2)));
@@ -286,11 +342,7 @@ export default function Page() {
     setInterestDeduction(loanPrincipal * (rate / 100));
 
     const repairFund = useRepair ? mi * (parseFloat(saveRepairRate) || 0) : 0;
-    // For Safe Spend, we should deduct the ESTIMATED TAX, not a flat %.
-    // But to keep it simple and safe, we use the greater of estimated tax or user %
     const userTaxRate = (parseFloat(saveTaxRate) || 20) / 100;
-    // We recommend saving based on Taxable Income, but many save on Gross. 
-    // Let's stick to the logic: Tax Fund = Taxable Income * Rate
     const taxFund = useTax ? Math.max(estimatedSETax, taxableIncomeForTax * userTaxRate) : 0; 
     
     const emergencyFund = useEmergency ? net * ((parseFloat(saveEmergencyRate) || 5) / 100) : 0;
