@@ -117,13 +117,14 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
 
 // --- [Modals & Components] ---
 
-const ShareButton = ({ text }: { text: string }) => {
+const ShareButton = ({ text, value }: { text: string, value: string }) => {
   const [copied, setCopied] = useState(false);
   const handleShare = async () => {
+    const shareText = `${text} Check yours at: https://gigcalcapp.com`;
     if (navigator.share) {
-      try { await navigator.share({ title: 'GigCalc.US', text: text, url: 'https://gigcalcapp.com' }); } catch (err) { console.error(err); }
+      try { await navigator.share({ title: 'GigCalc.US', text: shareText, url: 'https://gigcalcapp.com' }); } catch (err) { console.error(err); }
     } else {
-      navigator.clipboard.writeText(`${text} Check: https://gigcalcapp.com`);
+      navigator.clipboard.writeText(shareText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -196,7 +197,7 @@ export default function Page() {
   
   // Results
   const [realWage, setRealWage] = useState(0);
-  const [netProfit, setNetProfit] = useState(0);
+  const [netProfit, setNetProfit] = useState(0); // Real Pocket Money
   const [profitPerMile, setProfitPerMile] = useState(0);
   const [payPerOrder, setPayPerOrder] = useState(0);
   const [deduction, setDeduction] = useState(0);
@@ -243,10 +244,11 @@ export default function Page() {
     const gas = parseFloat(gasPrice) || 3.5;
     const carMpg = parseFloat(mpg) || 25;
 
+    // 1. Real Wallet Calculation (Actual Expense)
     const fuelCost = (mi / carMpg) * gas;
     const wearCost = mi * 0.1; 
-    const totalCost = fuelCost + wearCost;
-    const net = inc - totalCost;
+    const totalActualCost = fuelCost + wearCost;
+    const net = inc - totalActualCost; // Real Net Profit
     const wage = net / hrs;
 
     setNetProfit(parseFloat(net.toFixed(2)));
@@ -256,11 +258,16 @@ export default function Page() {
     setDeduction(parseFloat((mi * IRS_RATE).toFixed(2)));
     if (wage > 0) setMyHourlyWage(wage.toFixed(2));
 
-    const taxableNet = Math.max(0, net - (mi * IRS_RATE));
-    const seTaxBase = taxableNet * 0.9235;
+    // 2. Tax Calculation (IRS Method)
+    // Taxable Income = Gross Income - Standard Mileage Deduction
+    const taxableIncomeForTax = Math.max(0, inc - (mi * IRS_RATE));
+    
+    // SE Tax = 15.3% of 92.35% of Taxable Business Income
+    const seTaxBase = taxableIncomeForTax * 0.9235;
     const estimatedSETax = seTaxBase * 0.153;
     setTaxLiability(parseFloat(estimatedSETax.toFixed(2)));
 
+    // 3. Other Calcs
     const price = parseFloat(homePrice) || 0;
     const downPercent = parseFloat(downPayment) || 0;
     const rate = parseFloat(interestRate) || 0;
@@ -279,7 +286,13 @@ export default function Page() {
     setInterestDeduction(loanPrincipal * (rate / 100));
 
     const repairFund = useRepair ? mi * (parseFloat(saveRepairRate) || 0) : 0;
-    const taxFund = useTax ? taxableNet * ((parseFloat(saveTaxRate) || 20) / 100) : 0;
+    // For Safe Spend, we should deduct the ESTIMATED TAX, not a flat %.
+    // But to keep it simple and safe, we use the greater of estimated tax or user %
+    const userTaxRate = (parseFloat(saveTaxRate) || 20) / 100;
+    // We recommend saving based on Taxable Income, but many save on Gross. 
+    // Let's stick to the logic: Tax Fund = Taxable Income * Rate
+    const taxFund = useTax ? Math.max(estimatedSETax, taxableIncomeForTax * userTaxRate) : 0; 
+    
     const emergencyFund = useEmergency ? net * ((parseFloat(saveEmergencyRate) || 5) / 100) : 0;
     const vacationFund = useVacation ? net * ((parseFloat(saveVacationRate) || 3) / 100) : 0;
     
@@ -337,7 +350,7 @@ export default function Page() {
                 <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Real Net Profit (Take Home)</p>
-                    <ShareButton text={`My Real Hourly Wage is $${realWage}/hr on GigCalc!`} />
+                    <ShareButton text={`My Real Hourly Wage is $${realWage}/hr on GigCalc!`} value={realWage.toString()} />
                   </div>
                   <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">${netProfit > 0 ? netProfit.toFixed(2) : '0.00'}</div>
                   
@@ -357,7 +370,7 @@ export default function Page() {
                   <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4"><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Profit Per Mile</p><p className={`text-xl font-extrabold ${profitPerMile < 1.0 ? 'text-yellow-400' : 'text-white'}`}>${profitPerMile.toFixed(2)} <span className="text-xs font-medium opacity-50">/mi</span></p></div><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Pay Per Order</p><p className="text-xl font-extrabold text-white">${payPerOrder.toFixed(2)} <span className="text-xs font-medium opacity-50">/avg</span></p></div></div>
                 </div>
                 
-                {/* [NEW] Engagement Booster */}
+                {/* Engagement Booster */}
                 {parseFloat(income) > 0 && (
                   <div onClick={scrollToGuides} className="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center justify-between cursor-pointer hover:bg-blue-100 transition animate-pulse">
                     <div className="flex items-center gap-2">
@@ -382,7 +395,7 @@ export default function Page() {
                 <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest">Today's "Safe to Spend"</p>
-                    <ShareButton text={`I can safely spend $${safeSpendAmount} today! Calculated by GigCalc.US`} />
+                    <ShareButton text={`I can safely spend $${safeSpendAmount} today! Calculated by GigCalc.US`} value={safeSpendAmount.toString()} />
                   </div>
                   <div className="text-6xl font-black tracking-tighter mb-2">${safeSpendAmount > 0 ? safeSpendAmount.toFixed(2) : '0.00'}</div><p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p>
                 </div>
