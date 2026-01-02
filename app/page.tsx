@@ -29,7 +29,7 @@ type InputState = {
   isRenting: boolean;
 };
 
-// --- [Constants & SEO Data] ---
+// --- [Constants] ---
 const INITIAL_STATE: InputState = {
   income: '', hours: '', miles: '', orders: '',
   gasPrice: '3.50', mpg: '25',
@@ -41,14 +41,14 @@ const INITIAL_STATE: InputState = {
 };
 
 const TAB_SEO_INFO: any = {
-  profit: { title: "Driver Profit Calc (Net Income) - GigCalc.US", desc: "Calculate Real Hourly Wage & Net Profit for Uber/DoorDash using 2025 IRS Standard Mileage Rates." },
-  safe: { title: "Tax Savings Calculator - GigCalc.US", desc: "Estimate Safe-to-Spend income and 2025 Quarterly Tax payments based on IRS Schedule SE logic." },
+  profit: { title: "Driver Profit Calc - GigCalc.US", desc: "Calculate Real Hourly Wage & Net Profit for Uber/DoorDash using 2025 IRS Standard Mileage Rates." },
+  safe: { title: "Tax & Safe Spend - GigCalc.US", desc: "Estimate Safe-to-Spend income and 2025 Quarterly Tax payments based on IRS Schedule SE logic." },
   tax: { title: "Mileage Deduction Calculator - GigCalc.US", desc: "Calculate 2025 tax deductions using the 67 cents/mile Standard Mileage Rate vs Actual Expenses." },
-  goal: { title: "Shift Planner (Net Wage) - GigCalc.US", desc: "Plan your driving shifts based on real net profit per hour, not just gross app earnings." },
-  house: { title: "Gig Worker Mortgage Calc - GigCalc.US", desc: "Calculate mortgage qualification capability based on Schedule C Net Profit (Line 31)." }
+  goal: { title: "Shift Planner - GigCalc.US", desc: "Plan your driving shifts based on real net profit per hour, not just gross app earnings." },
+  house: { title: "Mortgage Calc - GigCalc.US", desc: "Calculate mortgage qualification capability based on Schedule C Net Profit." }
 };
 
-// --- [Icons Component] (A11y Optimized) ---
+// --- [Icons] ---
 const Icons = {
   Profit: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
   Shield: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
@@ -57,11 +57,10 @@ const Icons = {
   Wallet: () => <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg>,
   Share: () => <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>,
   Mail: () => <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-  ArrowDown: () => <svg aria-hidden="true" className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>,
-  Check: () => <svg aria-hidden="true" className="w-3 h-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+  ArrowDown: () => <svg aria-hidden="true" className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
 };
 
-// --- [Utility Components] ---
+// --- [Components] ---
 const ShareButton = ({ text }: { text: string }) => {
   const [copied, setCopied] = useState(false);
   const handleShare = async () => {
@@ -90,7 +89,6 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </aside>
 );
 
-// --- [Modal Components] ---
 const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) => {
   if (!isOpen) return null;
   return (
@@ -135,7 +133,7 @@ const CookieBanner = () => {
   );
 };
 
-// --- [Custom Hook: Calculation Engine] ---
+// --- [Logic] ---
 const useGigCalculations = (inputs: InputState) => {
   return useMemo(() => {
     const inc = parseFloat(inputs.income) || 0;
@@ -204,6 +202,7 @@ export default function Page() {
   useEffect(() => {
     const info = TAB_SEO_INFO[activeTab] || TAB_SEO_INFO['profit'];
     document.title = info.title;
+    
     let metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) { metaDescription.setAttribute('content', info.desc); } 
     else {
@@ -212,12 +211,21 @@ export default function Page() {
       meta.content = info.desc;
       document.head.appendChild(meta);
     }
+
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('tab', activeTab);
       window.history.replaceState({}, '', url);
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('guide', platform);
+      window.history.replaceState({}, '', url);
+    }
+  }, [platform]);
 
   const r = useGigCalculations(inputs);
   const handleChange = (field: keyof InputState, value: any) => setInputs(prev => ({ ...prev, [field]: value }));
@@ -237,7 +245,6 @@ export default function Page() {
     house: [{ q: 'Mortgage Trap', a: "High deductions lower your taxes but also lower your 'Qualifying Income' for loans." }]
   };
 
-  // --- [GEO: Rich JSON-LD Data Injection] ---
   const geoSchema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -247,14 +254,13 @@ export default function Page() {
         'applicationCategory': 'FinanceApplication',
         'operatingSystem': 'Web',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-        'description': 'Free Calculator for Uber, DoorDash, and Lyft drivers to calculate Net Profit, Real Hourly Wage, and Schedule C Tax Liability using 2025 IRS Standard Mileage Rates.'
+        'description': 'Free Calculator for Uber, DoorDash, and Lyft drivers to calculate Net Profit, Real Hourly Wage, and Schedule C Tax Liability.'
       },
       {
         '@type': 'FAQPage',
         'mainEntity': [
-          { '@type': 'Question', 'name': 'What is the 2025 IRS Standard Mileage Rate?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The 2025 IRS Standard Mileage Rate for business use is 67 cents per mile. This rate covers gas, insurance, repairs, and depreciation.' } },
-          { '@type': 'Question', 'name': 'Do DoorDash drivers pay tax on tips?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. While new laws may exempt tips from Federal Income Tax, gig workers must still pay the 15.3% Self-Employment Tax (Social Security & Medicare) on all tip income if net profit exceeds $400.' } },
-          { '@type': 'Question', 'name': 'How do I calculate net profit for Gig Work?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Net Profit = Gross Earnings - (Total Business Miles * $0.67). Do not deduct gas separately if taking the mileage deduction.' } }
+          { '@type': 'Question', 'name': 'What is the 2025 IRS Standard Mileage Rate?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'The 2025 IRS Standard Mileage Rate for business use is 67 cents per mile.' } },
+          { '@type': 'Question', 'name': 'Do DoorDash drivers pay tax on tips?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Gig workers must still pay the 15.3% Self-Employment Tax on all tip income.' } }
         ]
       }
     ]
@@ -264,15 +270,12 @@ export default function Page() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex justify-center pt-0 sm:pt-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(geoSchema) }} />
       
-      {/* Semantic Structure: Main Wrapper */}
       <main className="w-full max-w-[480px] bg-white sm:min-h-[800px] sm:h-auto sm:rounded-[2rem] sm:shadow-2xl sm:border border-slate-100 flex flex-col relative overflow-hidden">
         
-        {/* Header */}
         <header className="px-6 py-5 bg-white flex items-center justify-center sticky top-0 z-50 border-b border-slate-50">
           <h1 className="text-xl font-black text-slate-900 tracking-tighter">Gig<span className="text-blue-600">Calc</span>.US</h1>
         </header>
 
-        {/* Semantic: Nav for Tabs */}
         <nav className="px-4 py-3 bg-white" aria-label="Calculator Tabs">
           <div className="flex p-1.5 bg-slate-100 rounded-2xl overflow-x-auto scrollbar-hide">
             {[{ id: 'profit', label: 'Driver', icon: Icons.Profit }, { id: 'safe', label: 'Wallet', icon: Icons.Wallet }, { id: 'tax', label: 'Shield', icon: Icons.Shield }, { id: 'goal', label: 'Goal', icon: Icons.Target }, { id: 'house', label: 'House', icon: Icons.House }].map((tab) => (
@@ -291,7 +294,7 @@ export default function Page() {
 
         <div className="flex-1 overflow-y-auto scrollbar-hide">
           <div className="px-6 py-2 pb-6">
-            {/* === PROFIT SECTION === */}
+            
             {activeTab === 'profit' && (
               <section className="animate-fade-in-up" aria-labelledby="profit-heading">
                 <div className="text-center mb-6 pt-2">
@@ -301,36 +304,44 @@ export default function Page() {
                 
                 <div className="mb-8">
                   <label htmlFor="income" className="text-base font-black text-slate-700 uppercase tracking-tight mb-3 block">Total App Payout (Gross)</label>
-                  <div className="flex items-center bg-slate-50 rounded-2xl px-5 py-5 focus-within:ring-2 ring-blue-500/20 transition-all border border-slate-100 shadow-inner">
+                  <div className="flex items-center bg-slate-50 rounded-2xl px-5 py-5 focus-within:ring-2 focus:ring-blue-100 transition-all border border-slate-100 shadow-inner">
                     <span className="text-3xl font-bold text-blue-600 mr-2">$</span>
-                    <input id="income" type="number" value={inputs.income} onChange={(e) => handleChange('income', e.target.value)} placeholder="0.00" className="w-full bg-transparent text-5xl font-black text-slate-900 outline-none placeholder-slate-200" />
+                    <input 
+                      id="income" 
+                      type="text" 
+                      inputMode="decimal"
+                      value={inputs.income} 
+                      onChange={(e) => handleChange('income', e.target.value)} 
+                      placeholder="0.00" 
+                      className="w-full bg-transparent text-5xl font-black text-slate-900 outline-none placeholder-slate-200" 
+                    />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
                   <div className="col-span-1">
                     <label htmlFor="hours" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Hours</label>
-                    <input id="hours" type="number" value={inputs.hours} onChange={(e) => handleChange('hours', e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none focus:ring-2 focus:ring-blue-100" />
+                    <input id="hours" type="text" inputMode="decimal" value={inputs.hours} onChange={(e) => handleChange('hours', e.target.value)} className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none focus:ring-2 focus:ring-blue-100 border border-slate-50 transition-all" />
                   </div>
                   <div className="col-span-2">
                     <label htmlFor="miles" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block text-center">Miles (Active + Return)</label>
-                    <input id="miles" type="number" value={inputs.miles} onChange={(e) => handleChange('miles', e.target.value)} placeholder="Check app" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none border-2 border-blue-50/50 focus:border-blue-100" />
+                    <input id="miles" type="text" inputMode="decimal" value={inputs.miles} onChange={(e) => handleChange('miles', e.target.value)} placeholder="Check app" className="w-full bg-slate-50 p-3 rounded-2xl text-lg font-bold text-center outline-none border-2 border-blue-50/50 focus:border-blue-100 transition-all" />
                   </div>
                 </div>
 
                 <details className="group mt-4"><summary className="list-none flex items-center justify-between text-xs font-bold text-slate-400 cursor-pointer py-3 px-2 hover:bg-slate-50 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-blue-100" tabIndex={0}><span>Vehicle Expenses (Gas & Mileage)</span><span className="group-open:rotate-180 transition text-slate-300">▼</span></summary>
                   <div className="grid grid-cols-2 gap-4 mt-2 bg-slate-50 p-4 rounded-2xl">
-                    <div><label htmlFor="gasPrice" className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label><input id="gasPrice" type="number" value={inputs.gasPrice} onChange={(e) => handleChange('gasPrice', e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div>
-                    <div><label htmlFor="mpg" className="text-[10px] font-bold text-slate-400 uppercase">Gas Mileage</label><input id="mpg" type="number" value={inputs.mpg} onChange={(e) => handleChange('mpg', e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div>
+                    <div><label htmlFor="gasPrice" className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label><input id="gasPrice" type="text" inputMode="decimal" value={inputs.gasPrice} onChange={(e) => handleChange('gasPrice', e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-2 font-bold text-slate-700 outline-none text-sm focus:border-blue-500 transition-colors" /></div>
+                    <div><label htmlFor="mpg" className="text-[10px] font-bold text-slate-400 uppercase">Gas Mileage</label><input id="mpg" type="text" inputMode="decimal" value={inputs.mpg} onChange={(e) => handleChange('mpg', e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-2 font-bold text-slate-700 outline-none text-sm focus:border-blue-500 transition-colors" /></div>
                   </div>
                 </details>
                 
-                <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
+                <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Real Net Profit (Take Home)</p>
                     <ShareButton text={`My Real Hourly Wage is $${r.realWage}/hr on GigCalc!`} />
                   </div>
-                  <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">{formatCurrency(r.netProfit > 0 ? r.netProfit : 0)}</div>
+                  <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400 drop-shadow-sm">{formatCurrency(r.netProfit > 0 ? r.netProfit : 0)}</div>
                   
                   {r.netProfit > 400 && (
                     <>
@@ -347,11 +358,7 @@ export default function Page() {
                 </div>
                 
                 {parseFloat(inputs.income) > 0 && (
-                  <button 
-                    onClick={scrollToGuides} 
-                    className="w-full text-left mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center justify-between cursor-pointer hover:bg-blue-100 transition animate-pulse focus:outline-none focus:ring-2 focus:ring-blue-300"
-                    aria-label="Scroll to tax tips"
-                  >
+                  <button onClick={scrollToGuides} className="w-full text-left mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center justify-between cursor-pointer hover:bg-blue-100 transition animate-pulse focus:outline-none focus:ring-2 focus:ring-blue-300" aria-label="Scroll to tax tips">
                     <div className="flex items-center gap-2"><span className="text-lg" aria-hidden="true">💡</span><div><p className="text-xs font-bold text-blue-800">Wait! Don't overpay taxes.</p><p className="text-[10px] text-blue-600">See the "No Tax on Tips" trap & Audit tips 👇</p></div></div><Icons.ArrowDown />
                   </button>
                 )}
@@ -359,21 +366,19 @@ export default function Page() {
               </section>
             )}
 
-            {/* === SAFE SPEND SECTION === */}
             {activeTab === 'safe' && (
               <section className="animate-fade-in-up" aria-labelledby="safe-heading">
-                <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6">
+                <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6 bg-gradient-to-br from-emerald-600 to-emerald-500">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest">Today's "Safe to Spend"</p>
                     <ShareButton text={`I can safely spend ${formatCurrency(r.safeSpendAmount)} today!`} />
                   </div>
-                  <div className="text-6xl font-black tracking-tighter mb-2">{formatCurrency(r.safeSpendAmount > 0 ? r.safeSpendAmount : 0)}</div>
+                  <div className="text-6xl font-black tracking-tighter mb-2 drop-shadow-sm">{formatCurrency(r.safeSpendAmount > 0 ? r.safeSpendAmount : 0)}</div>
                   <p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p>
                 </div>
                 
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-3">
                   <div className="flex justify-between items-center pb-3 border-b border-slate-100"><span className="text-xs font-bold text-slate-900">Net Profit</span><span className="text-sm font-black text-slate-900">{formatCurrency(r.netProfit)}</span></div>
-                  
                   {inputs.useTax && (
                     <div className="flex items-center justify-between p-2 bg-blue-50 rounded-xl border border-blue-100">
                       <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-blue-500"></span><div><p className="text-xs font-bold text-blue-800">Estimated Tax Bill</p><p className="text-[9px] text-blue-500">SE Tax (~15.3%) + Income Tax</p></div></div>
@@ -389,12 +394,11 @@ export default function Page() {
               </section>
             )}
 
-            {/* === TAX SECTION === */}
             {activeTab === 'tax' && (
               <section className="animate-fade-in-up" aria-labelledby="tax-heading">
                 <div className="text-center mb-6 pt-2"><h2 id="tax-heading" className="text-lg font-bold text-slate-900">Tax Shield</h2><p className="text-xs text-slate-500 mt-1">IRS Deduction: <b>67¢ / mile</b></p></div>
-                <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-4"><label htmlFor="miles-tax" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Miles Driven</label><div className="flex items-center border-b-2 border-blue-500 py-2"><input id="miles-tax" type="number" value={inputs.miles} onChange={(e) => handleChange('miles', e.target.value)} className="w-full text-4xl font-extrabold text-slate-900 outline-none" /><span className="text-sm font-bold text-slate-400 ml-2">mi</span></div></div>
-                <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg shadow-blue-200 text-center mb-4">
+                <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-4"><label htmlFor="miles-tax" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Miles Driven</label><div className="flex items-center border-b-2 border-blue-500 py-2"><input id="miles-tax" type="text" inputMode="decimal" value={inputs.miles} onChange={(e) => handleChange('miles', e.target.value)} className="w-full text-4xl font-extrabold text-slate-900 outline-none" /><span className="text-sm font-bold text-slate-400 ml-2">mi</span></div></div>
+                <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg shadow-blue-200 text-center mb-4 bg-gradient-to-br from-blue-600 to-blue-500">
                   <div className="flex justify-between items-start mb-1">
                     <p className="text-blue-200 text-[10px] font-bold uppercase tracking-widest">Calculated Deduction</p>
                     <ShareButton text={`I found a $${r.deduction} tax shield using GigCalc.US`} />
@@ -407,13 +411,12 @@ export default function Page() {
               </section>
             )}
 
-            {/* === GOAL SECTION === */}
             {activeTab === 'goal' && (
               <section className="animate-fade-in-up" aria-labelledby="goal-heading">
                  <div className="text-center mb-6 pt-2"><h2 id="goal-heading" className="text-lg font-bold text-slate-900">Shift Planner</h2></div>
                  <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6 mb-6">
-                    <div><label htmlFor="targetMoney" className="text-[10px] font-bold text-blue-600 uppercase tracking-wide mb-2 block">Target ($)</label><div className="flex items-center bg-blue-50 px-4 py-3 rounded-2xl"><span className="text-xl font-bold text-blue-300 mr-2">$</span><input id="targetMoney" type="number" value={inputs.targetMoney} onChange={(e) => handleChange('targetMoney', e.target.value)} placeholder="200" className="w-full bg-transparent text-3xl font-extrabold text-blue-900 outline-none placeholder-blue-200" /></div></div>
-                    <div><label htmlFor="myHourlyWage" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Hourly Wage</label><div className="flex items-center border-b border-slate-200 py-2"><span className="text-lg font-bold text-slate-300 mr-2">$</span><input id="myHourlyWage" type="number" value={inputs.myHourlyWage} onChange={(e) => handleChange('myHourlyWage', e.target.value)} className="w-full bg-transparent text-2xl font-bold text-slate-700 outline-none" /><span className="text-xs font-bold text-slate-400">/hr</span></div></div>
+                    <div><label htmlFor="targetMoney" className="text-[10px] font-bold text-blue-600 uppercase tracking-wide mb-2 block">Target ($)</label><div className="flex items-center bg-blue-50 px-4 py-3 rounded-2xl"><span className="text-xl font-bold text-blue-300 mr-2">$</span><input id="targetMoney" type="text" inputMode="decimal" value={inputs.targetMoney} onChange={(e) => handleChange('targetMoney', e.target.value)} placeholder="200" className="w-full bg-transparent text-3xl font-extrabold text-blue-900 outline-none placeholder-blue-200" /></div></div>
+                    <div><label htmlFor="myHourlyWage" className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Hourly Wage</label><div className="flex items-center border-b border-slate-200 py-2"><span className="text-lg font-bold text-slate-300 mr-2">$</span><input id="myHourlyWage" type="text" inputMode="decimal" value={inputs.myHourlyWage} onChange={(e) => handleChange('myHourlyWage', e.target.value)} className="w-full bg-transparent text-2xl font-bold text-slate-700 outline-none" /><span className="text-xs font-bold text-slate-400">/hr</span></div></div>
                  </div>
                  <div className="grid grid-cols-2 gap-4">
                     <div className="bg-slate-900 text-white p-5 rounded-3xl shadow-xl flex flex-col justify-between aspect-square"><span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hours</span><div className="text-4xl font-black tracking-tighter">{inputs.targetMoney ? (parseFloat(inputs.targetMoney) / parseFloat(inputs.myHourlyWage)).toFixed(1) : '0'}<span className="text-lg font-medium text-slate-500 ml-1">h</span></div></div>
@@ -423,13 +426,12 @@ export default function Page() {
               </section>
             )}
 
-            {/* === HOUSE SECTION === */}
             {activeTab === 'house' && (
               <section className="animate-fade-in-up" aria-labelledby="house-heading">
                 <div className="text-center mb-4 pt-2"><h2 id="house-heading" className="text-lg font-bold text-slate-900">Home Buying Calc 🏠</h2></div>
                 <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 mb-6">
-                    <div><label htmlFor="homePrice" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Home Price</label><div className="flex items-center border-b border-slate-200 pb-1"><span className="text-lg font-bold text-slate-300 mr-2">$</span><input id="homePrice" type="number" value={inputs.homePrice} onChange={(e) => handleChange('homePrice', e.target.value)} className="w-full text-2xl font-black text-slate-900 outline-none" /></div></div>
-                    <div className="grid grid-cols-2 gap-4"><div><label htmlFor="downPayment" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Down Payment (%)</label><input id="downPayment" type="number" value={inputs.downPayment} onChange={(e) => handleChange('downPayment', e.target.value)} className="w-full bg-slate-50 p-2 rounded-lg font-bold text-center outline-none" /></div><div><label htmlFor="loanTerm" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Loan Term</label><input id="loanTerm" type="number" value={inputs.loanTerm} onChange={(e) => handleChange('loanTerm', e.target.value)} className="w-full bg-slate-50 p-2 rounded-lg font-bold text-center outline-none" /></div></div>
+                    <div><label htmlFor="homePrice" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Home Price</label><div className="flex items-center border-b border-slate-200 pb-1"><span className="text-lg font-bold text-slate-300 mr-2">$</span><input id="homePrice" type="text" inputMode="decimal" value={inputs.homePrice} onChange={(e) => handleChange('homePrice', e.target.value)} className="w-full text-2xl font-black text-slate-900 outline-none" /></div></div>
+                    <div className="grid grid-cols-2 gap-4"><div><label htmlFor="downPayment" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Down Payment (%)</label><input id="downPayment" type="text" inputMode="decimal" value={inputs.downPayment} onChange={(e) => handleChange('downPayment', e.target.value)} className="w-full bg-slate-50 p-2 rounded-lg font-bold text-center outline-none" /></div><div><label htmlFor="loanTerm" className="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Loan Term</label><input id="loanTerm" type="text" inputMode="decimal" value={inputs.loanTerm} onChange={(e) => handleChange('loanTerm', e.target.value)} className="w-full bg-slate-50 p-2 rounded-lg font-bold text-center outline-none" /></div></div>
                 </div>
                 <div className="p-6 rounded-3xl shadow-xl bg-slate-900 text-white">
                     <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total Monthly Cost</p>
@@ -441,11 +443,8 @@ export default function Page() {
 
           </div>
 
-          {/* Semantic: Guides Section with Definition Lists for GEO */}
           <section className="px-6 py-8 bg-slate-50 border-t border-slate-200" id="guides" aria-labelledby="guides-heading">
             <h3 id="guides-heading" className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2"><span>💡</span> Expert FAQ (Reddit Answered)</h3>
-            
-            {/* Semantic Definition List for Q&A */}
             <div className="space-y-6 text-slate-600 mb-10">
               {FAQ_DATA[activeTab]?.map((item: any, index: number) => (
                 <dl key={index} className="animate-fade-in-up">
@@ -459,13 +458,7 @@ export default function Page() {
               <h3 className="text-sm font-bold text-slate-900 mb-3">📚 Platform Specific Tax Guide</h3>
               <div className="flex gap-2 mb-4 overflow-x-auto scrollbar-hide pb-1" role="tablist">
                 {Object.keys(PLATFORM_GUIDES).map((key) => (
-                  <button 
-                    key={key} 
-                    onClick={() => setPlatform(key)} 
-                    role="tab"
-                    aria-selected={platform === key}
-                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200 ${platform === key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}
-                  >
+                  <button key={key} onClick={() => setPlatform(key)} role="tab" aria-selected={platform === key} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200 ${platform === key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>
                     {key === 'uber' ? 'Uber / Lyft' : key === 'doordash' ? 'DoorDash' : 'Amazon Flex'}
                   </button>
                 ))}
@@ -481,7 +474,6 @@ export default function Page() {
               </article>
             </div>
 
-            {/* GEO Authority: Methodology Section */}
             <section id="methodology" className="mt-8 pt-6 border-t border-slate-200" aria-labelledby="method-heading">
                 <h3 id="method-heading" className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1"><Icons.Shield /> Calculation Methodology</h3>
                 <p className="text-[9px] text-slate-400 leading-relaxed">
@@ -492,7 +484,6 @@ export default function Page() {
             </section>
           </section>
 
-          {/* Semantic: Footer */}
           <footer className="px-6 pb-24 text-center border-t border-slate-200 pt-8 bg-slate-100">
             <button onClick={() => setIsFeedbackOpen(true)} className="text-xs font-bold text-slate-500 hover:text-blue-600 flex items-center justify-center gap-2 mx-auto mb-4 bg-white px-4 py-2 rounded-full border border-slate-200 shadow-sm transition focus:ring-2 focus:ring-blue-300 outline-none"><Icons.Mail /> Send Feedback</button>
             <div className="text-[10px] text-slate-400 leading-relaxed mb-4 text-justify px-2">
