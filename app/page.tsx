@@ -9,7 +9,9 @@ const Icons = {
   Target: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> ),
   House: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg> ),
   Wallet: () => ( <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg> ),
+  Share: () => ( <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg> ),
   Mail: () => ( <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> ),
+  ArrowDown: () => ( <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg> )
 };
 
 const AdSlot = ({ label = 'Sponsored', className = '' }) => (
@@ -21,7 +23,7 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
   </div>
 );
 
-// --- [SEO/GEO Content: 100% Reddit/Quora Optimized] ---
+// --- [Content Data] ---
 
 const FAQ_DATA: any = {
   profit: [
@@ -76,7 +78,7 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ_DATA[activeTab]?.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) || [] };
 
   return (
-    <div className="px-6 py-8 bg-slate-50 border-t border-slate-200">
+    <div className="px-6 py-8 bg-slate-50 border-t border-slate-200" id="guides">
       {schemas.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
@@ -113,7 +115,26 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   );
 };
 
-// --- [Modals] ---
+// --- [Modals & Components] ---
+
+const ShareButton = ({ text }: { text: string }) => {
+  const [copied, setCopied] = useState(false);
+  const handleShare = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: 'GigCalc.US', text: text, url: 'https://gigcalcapp.com' }); } catch (err) { console.error(err); }
+    } else {
+      navigator.clipboard.writeText(`${text} Check: https://gigcalcapp.com`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+  return (
+    <button onClick={handleShare} className="text-[10px] font-bold text-blue-500 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full hover:bg-blue-100 transition">
+      <Icons.Share /> {copied ? 'Copied!' : 'Share'}
+    </button>
+  );
+};
+
 const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) => {
   if (!isOpen) return null;
   return (
@@ -122,7 +143,7 @@ const FeedbackModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">✕</button>
         <h3 className="text-lg font-bold text-slate-900 mb-1">Send Feedback</h3>
         <form action="https://formspree.io/f/xldqqkdb" method="POST" className="space-y-3 mt-4">
-          <textarea name="message" placeholder="Suggestions?" className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
+          <textarea name="message" placeholder="Found a bug? Suggestions?" className="w-full h-32 p-4 bg-slate-50 rounded-xl text-sm outline-none focus:ring-2 ring-blue-100 resize-none" required></textarea>
           <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">Send</button>
         </form>
       </div>
@@ -191,7 +212,7 @@ export default function Page() {
   const [propertyTaxRate, setPropertyTaxRate] = useState<string>('1.2');
   const [isRenting, setIsRenting] = useState(false);
   const [monthlyRent, setMonthlyRent] = useState<string>('2200');
-  const [saveTaxRate, setSaveTaxRate] = useState<string>('20'); // Changed default to 20% based on Reddit
+  const [saveTaxRate, setSaveTaxRate] = useState<string>('20'); 
   const [saveRepairRate, setSaveRepairRate] = useState<string>('0.08');
   const [saveEmergencyRate, setSaveEmergencyRate] = useState<string>('5');
   const [saveVacationRate, setSaveVacationRate] = useState<string>('3');
@@ -235,14 +256,11 @@ export default function Page() {
     setDeduction(parseFloat((mi * IRS_RATE).toFixed(2)));
     if (wage > 0) setMyHourlyWage(wage.toFixed(2));
 
-    // Tax Logic Update based on Reddit
-    // SE Tax starts if Net Profit > $400
     const taxableNet = Math.max(0, net - (mi * IRS_RATE));
     const seTaxBase = taxableNet * 0.9235;
     const estimatedSETax = seTaxBase * 0.153;
     setTaxLiability(parseFloat(estimatedSETax.toFixed(2)));
 
-    // House & Savings Calc
     const price = parseFloat(homePrice) || 0;
     const downPercent = parseFloat(downPayment) || 0;
     const rate = parseFloat(interestRate) || 0;
@@ -272,6 +290,10 @@ export default function Page() {
     setSafeSpendAmount(parseFloat((net - repairFund - taxFund - emergencyFund - vacationFund).toFixed(2)));
 
   }, [income, hours, miles, orders, gasPrice, mpg, homePrice, downPayment, interestRate, loanTerm, propertyTaxRate, isRenting, monthlyRent, saveTaxRate, saveRepairRate, saveEmergencyRate, saveVacationRate, useTax, useRepair, useEmergency, useVacation]);
+
+  const scrollToGuides = () => {
+    document.getElementById('guides')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex justify-center pt-0 sm:pt-6">
@@ -313,16 +335,17 @@ export default function Page() {
                 <details className="group mt-4"><summary className="list-none flex items-center justify-between text-xs font-bold text-slate-400 cursor-pointer py-3 px-2 hover:bg-slate-50 rounded-lg transition"><span>Vehicle Expenses (Gas & Mileage)</span><span className="group-open:rotate-180 transition text-slate-300">▼</span></summary><div className="grid grid-cols-2 gap-4 mt-2 bg-slate-50 p-4 rounded-2xl"><div><label className="text-[10px] font-bold text-slate-400 uppercase">Gas Price ($)</label><input type="number" value={gasPrice} onChange={(e) => setGasPrice(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /></div><div><label className="text-[10px] font-bold text-slate-400 uppercase">Gas Mileage</label><input type="number" value={mpg} onChange={(e) => setMpg(e.target.value)} className="w-full bg-transparent border-b border-slate-200 py-1 font-bold text-slate-700 outline-none" /><p className="text-[9px] text-slate-400 mt-1 text-right">Miles per Gallon</p></div></div></details>
                 
                 <div className="bg-slate-900 text-white p-6 rounded-3xl shadow-xl mt-6 relative overflow-hidden">
-                  <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Real Net Profit (Take Home)</p>
+                  <div className="flex justify-between items-start mb-1">
+                    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Real Net Profit (Take Home)</p>
+                    <ShareButton text={`My Real Hourly Wage is $${realWage}/hr on GigCalc!`} />
+                  </div>
                   <div className="text-6xl font-black tracking-tighter mb-2 text-emerald-400">${netProfit > 0 ? netProfit.toFixed(2) : '0.00'}</div>
                   
-                  {/* Tax Alert Badge */}
                   {netProfit > 400 && (
                     <div className="inline-block bg-red-500/20 border border-red-500/50 rounded-lg px-3 py-1 mb-3">
                       <p className="text-[10px] font-bold text-red-200 flex items-center gap-1">⚠️ IRS: Must File Schedule C ($400+)</p>
                     </div>
                   )}
-                  {/* SE Tax Display Line Item */}
                   {netProfit > 400 && (
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold text-red-400">Est. SE Tax (15.3%):</span>
@@ -333,15 +356,36 @@ export default function Page() {
                   <div className="flex items-center gap-2 mb-4 opacity-80"><span className="text-xs font-bold text-slate-300">Hourly Wage:</span><span className="text-xl font-bold text-white">${realWage > 0 ? realWage : '0.00'}/hr</span></div>
                   <div className="grid grid-cols-2 gap-4 border-t border-slate-700 pt-4"><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Profit Per Mile</p><p className={`text-xl font-extrabold ${profitPerMile < 1.0 ? 'text-yellow-400' : 'text-white'}`}>${profitPerMile.toFixed(2)} <span className="text-xs font-medium opacity-50">/mi</span></p></div><div><p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Pay Per Order</p><p className="text-xl font-extrabold text-white">${payPerOrder.toFixed(2)} <span className="text-xs font-medium opacity-50">/avg</span></p></div></div>
                 </div>
+                
+                {/* [NEW] Engagement Booster */}
+                {parseFloat(income) > 0 && (
+                  <div onClick={scrollToGuides} className="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center justify-between cursor-pointer hover:bg-blue-100 transition animate-pulse">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">💡</span>
+                      <div>
+                        <p className="text-xs font-bold text-blue-800">Wait! Don't overpay taxes.</p>
+                        <p className="text-[10px] text-blue-600">See the "No Tax on Tips" trap & Audit tips 👇</p>
+                      </div>
+                    </div>
+                    <Icons.ArrowDown />
+                  </div>
+                )}
+
                 <AdSlot />
               </div>
             )}
 
-            {/* SAFE SPEND TAB (With Tax Liability Logic) */}
+            {/* SAFE SPEND TAB */}
             {activeTab === 'safe' && (
               <div className="animate-fade-in-up">
-                <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Your Smart Wallet</h2><p className="text-xs text-slate-500 mt-1">Don't let tax season surprise you.</p></div>
-                <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6"><p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest mb-1">Today's "Safe to Spend"</p><div className="text-6xl font-black tracking-tighter mb-2">${safeSpendAmount > 0 ? safeSpendAmount.toFixed(2) : '0.00'}</div><p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p></div>
+                <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Your Smart Wallet</h2><p className="text-xs text-slate-500 mt-1">Federal & SE Tax included. State tax varies.</p></div>
+                <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-xl shadow-emerald-200 relative overflow-hidden mb-6">
+                  <div className="flex justify-between items-start mb-1">
+                    <p className="text-emerald-200 text-[10px] font-bold uppercase tracking-widest">Today's "Safe to Spend"</p>
+                    <ShareButton text={`I can safely spend $${safeSpendAmount} today! Calculated by GigCalc.US`} />
+                  </div>
+                  <div className="text-6xl font-black tracking-tighter mb-2">${safeSpendAmount > 0 ? safeSpendAmount.toFixed(2) : '0.00'}</div><p className="text-xs font-medium text-emerald-100 opacity-90">Today's Guilt-Free Money 🍺</p>
+                </div>
                 
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-3">
                   <div className="flex justify-between items-center pb-3 border-b border-slate-100">
@@ -349,7 +393,6 @@ export default function Page() {
                     <span className="text-sm font-black text-slate-900">${netProfit.toFixed(2)}</span>
                   </div>
                   
-                  {/* Tax Logic Display */}
                   {useTax && (
                     <div className="flex items-center justify-between p-2 bg-blue-50 rounded-xl border border-blue-100">
                       <div className="flex items-center gap-2">
@@ -361,7 +404,6 @@ export default function Page() {
                       </div>
                       <div className="text-right">
                         <span className="text-sm font-bold text-blue-600">-${taxSavings.toFixed(2)}</span>
-                        {/* Quarterly Tax Warning */}
                         {(taxSavings * 260) > 1000 && (
                            <p className="text-[8px] text-red-500 font-bold mt-1">May need Quarterly Pay!</p>
                         )}
