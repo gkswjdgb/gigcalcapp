@@ -27,36 +27,30 @@ const AdSlot = ({ label = 'Sponsored', className = '' }) => (
 
 const FAQ_DATA: any = {
   profit: [
-    { 
-      q: 'Does the 2025 "No Tax on Tips" law apply to me?', 
-      a: "BE CAREFUL. The new law only exempts tips from 'Federal Income Tax'. It does NOT exempt you from 'Self-Employment Tax' (15.3%). As a driver, you still owe the 15.3% tax on your tips. This calculator includes that hidden tax to keep you safe from IRS penalties." 
-    },
-    { 
-      q: 'The $400 Rule (Schedule C)', 
-      a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." 
-    }
+    { q: 'Does the 2025 "No Tax on Tips" law apply to me?', a: "BE CAREFUL. The new law only exempts tips from 'Federal Income Tax'. It does NOT exempt you from 'Self-Employment Tax' (15.3%). As a driver, you still owe the 15.3% tax on your tips. This calculator includes that hidden tax to keep you safe." },
+    { q: 'The $400 Rule (Schedule C)', a: "If your Net Profit (Earnings - Expenses) is over $400, you MUST file Schedule C and pay Self-Employment Tax (15.3%), even if you didn't get a 1099 form. This is the #1 mistake new drivers make." }
   ],
   safe: [
     { q: 'Can I deduct Gas AND Mileage?', a: 'NO. You generally must choose ONE: Standard Mileage Rate (67¢/mile) OR Actual Expenses (gas, repairs, insurance). You cannot double-dip. For most drivers, the Mileage Rate saves more money.' },
     { q: 'How to survive an IRS Audit?', a: "The burden of proof is on YOU. 'Aimless driving' doesn't count. Use a mileage tracking app (like Stride or Gridwise) to log every trip. Uber's summary log is often insufficient for an audit." }
   ],
   tax: [
-    { q: 'I am a student / dependent. Do I file?', a: 'YES. Even if your parents claim you as a dependent, if your Gig Net Profit is over $400, you MUST file your own tax return to pay the 15.3% SE Tax. Being a student does not exempt you from this.' },
-    { q: 'Quarterly Taxes (1040-ES)?', a: "If you expect to owe more than $1,000 in taxes when you file, the IRS requires quarterly estimated payments to avoid underpayment penalties." }
+    { q: 'Standard Mileage vs Actual Expenses?', a: "For 95% of gig drivers, the Standard Mileage Deduction (67¢/mile) acts as a massive 'Tax Shield'. Actual expenses require keeping every single gas/repair receipt. Mileage is simpler and usually higher." },
+    { q: 'Does this mean I get cash back?', a: "No. A tax deduction lowers your 'Taxable Income', it is not a direct cash reimbursement. However, lowering your taxable income saves you ~15-25% of that amount in actual tax payments." }
   ],
-  goal: [ { q: 'How many hours to earn $1000 net?', a: "Focus on Net Profit per Hour. If you earn $25 gross but $15 net, you need 67 hours, not 40. This tool reveals that reality." } ],
-  house: [ { q: 'Mortgage for Gig Workers?', a: "Lenders look at Line 31 (Net Profit) of your Schedule C. Huge mileage deductions save you tax money but lower the income you can show to a bank for a loan." } ]
+  goal: [ { q: 'Why is my "Real Hours" so high?', a: "Most drivers only look at 'Gross Pay' ($25/hr). But after gas and wear ($12/hr net), you need to work twice as long to reach your savings goal. This tool calculates based on your REAL pocket money." } ],
+  house: [ { q: 'The "Deduction Trap" for Mortgages', a: "Warning: High mileage deductions are great for paying less tax, BUT they lower your 'Net Profit'. Banks look at Net Profit for loans. Paying $0 tax might mean qualifying for $0 mortgage. It's a trade-off." } ]
 };
 
 const PLATFORM_GUIDES: any = {
   uber: {
     title: "Uber/Lyft: Audit Proofing & Deadhead Miles",
-    content: "IRS Red Flag: Claiming 100% of total miles. Commuting from home to the first ride is usually NOT deductible. Only miles between rides and to pickups count. Don't rely on Uber's year-end summary; it often misses 'deadhead' miles (driving back from a drop-off). Track it yourself.",
+    content: "IRS Red Flag: Claiming 100% of total miles. Commuting from home to the first ride is usually NOT deductible. Only miles between rides and to pickups count. Don't rely on Uber's year-end summary; it often misses 'deadhead' miles. Track it yourself.",
     tags: ["#AuditRisk", "#DeadheadMiles", "#ScheduleC", "#QuarterlyTax"]
   },
   doordash: {
     title: "DoorDash: The 'No Tax on Tips' Myth",
-    content: "Current Law Alert: Tips are fully taxable for Self-Employment Tax (15.3%), even if exempt from Income Tax. DoorDash only sends a 1099-NEC if you make over $600, but you must report income if profit > $400. Don't get caught by the IRS thinking small amounts don't matter.",
+    content: "Current Law Alert: Tips are fully taxable for Self-Employment Tax (15.3%), even if exempt from Income Tax. DoorDash only sends a 1099-NEC if you make over $600, but you must report income if profit > $400. Don't get caught by the IRS.",
     tags: ["#TaxOnTips", "#DasherTax", "#StudentTax", "#StandardDeduction"]
   },
   amazon: {
@@ -69,10 +63,7 @@ const PLATFORM_GUIDES: any = {
 const DynamicContent = ({ activeTab }: { activeTab: string }) => {
   const [platform, setPlatform] = useState('uber');
   
-  // SEO Strategy: Dynamic URL Updates
   useEffect(() => {
-    // This updates the URL query param without reloading the page
-    // Good for tracking which platform guide is active
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('guide', platform);
@@ -80,7 +71,6 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
     }
   }, [platform]);
 
-  // SEO Schemas
   const schemas = [
     { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'GigCalc', applicationCategory: 'FinanceApplication', offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } },
     { '@context': 'https://schema.org', '@type': 'Organization', name: 'GigCalc US', url: 'https://gigcalcapp.com', logo: 'https://gigcalcapp.com/favicon.ico' },
@@ -123,7 +113,7 @@ const DynamicContent = ({ activeTab }: { activeTab: string }) => {
         </div>
       </div>
 
-      {/* [NEW] GEO-Optimized Comparison Table */}
+      {/* Comparison Table */}
       <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
         <h3 className="text-sm font-bold text-slate-900 mb-4">🏆 Standard Deduction vs. Actual Expenses</h3>
         <div className="overflow-x-auto">
@@ -315,6 +305,9 @@ export default function Page() {
     setProfitPerMile(mi > 0 ? parseFloat((net / mi).toFixed(2)) : 0);
     setPayPerOrder(ord > 0 ? parseFloat((inc / ord).toFixed(2)) : 0);
     setDeduction(parseFloat((mi * IRS_RATE).toFixed(2)));
+    
+    // [NEW] Feature 1: Link Profit to Goal Tab
+    // If we have a calculated Real Wage, use it as default for Goal Tab
     if (wage > 0) setMyHourlyWage(wage.toFixed(2));
 
     // 2. Tax Calculation (IRS Method)
@@ -493,7 +486,23 @@ export default function Page() {
               <div className="animate-fade-in-up">
                 <div className="text-center mb-6 pt-2"><h2 className="text-lg font-bold text-slate-900">Tax Shield</h2><p className="text-xs text-slate-500 mt-1">IRS Deduction: <b>67¢ / mile</b></p></div>
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-4"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2 block">Miles Driven</label><div className="flex items-center border-b-2 border-blue-500 py-2"><input type="number" value={miles} onChange={(e) => setMiles(e.target.value)} placeholder="0" className="w-full text-4xl font-extrabold text-slate-900 outline-none" /><span className="text-sm font-bold text-slate-400 ml-2">mi</span></div></div>
-                <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg shadow-blue-200 text-center mb-4"><p className="text-blue-200 text-[10px] font-bold uppercase tracking-widest mb-1">Deductible Income</p><div className="text-5xl font-black tracking-tighter mb-2">${deduction.toFixed(2)}</div><p className="text-xs font-medium text-blue-100 opacity-90">IRS Standard Deduction Amount</p></div>
+                <div className="bg-blue-600 text-white p-6 rounded-3xl shadow-lg shadow-blue-200 text-center mb-4">
+                  <div className="flex justify-between items-start mb-1">
+                    <p className="text-blue-200 text-[10px] font-bold uppercase tracking-widest">Calculated Deduction</p>
+                    <ShareButton text={`I found a $${deduction} tax shield using GigCalc.US`} value={deduction.toString()} />
+                  </div>
+                  <div className="text-5xl font-black tracking-tighter mb-2">${deduction.toFixed(2)}</div>
+                  <p className="text-xs font-medium text-blue-100 opacity-90">IRS Standard Deduction Amount</p>
+                  
+                  {/* [NEW] Feature 2: Cash Value */}
+                  {deduction > 0 && (
+                    <div className="mt-4 pt-4 border-t border-blue-400/50">
+                      <p className="text-[10px] text-blue-200 mb-1">Estimated CASH Savings (Taxes you don't pay):</p>
+                      <p className="text-2xl font-bold text-white">~ ${ (deduction * 0.22).toFixed(2) }</p>
+                      <p className="text-[8px] text-blue-200 opacity-75">*Assumes 22% Bracket (Fed+SE)</p>
+                    </div>
+                  )}
+                </div>
                 <AdSlot />
               </div>
             )}
@@ -520,6 +529,14 @@ export default function Page() {
                     {!isRenting && (<><p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-1">Total Monthly Cost</p><div className="text-5xl font-black tracking-tighter mb-2">${totalMonthlyCost.toFixed(0)}</div><div className="text-xs text-slate-400 flex justify-between pt-4 border-t border-slate-700"><span>Mortgage: <b>${monthlyPayment.toFixed(0)}</b></span><span>Tax: <b>${monthlyTax.toFixed(0)}</b></span></div></>)}
                     {isRenting && (<><p className="text-white/80 text-[10px] font-bold uppercase tracking-widest mb-1">Monthly Cash Flow</p><div className="text-5xl font-black tracking-tighter mb-2">{cashFlow >= 0 ? '+' : ''}${cashFlow.toFixed(0)}</div><p className="text-xs font-medium text-white/90 mb-4">{cashFlow >= 0 ? 'You make money!' : 'You lose money.'}</p></>)}
                   </div>
+                  
+                  {/* [NEW] Feature 3: Deduction Trap Warning */}
+                  {!isRenting && (
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-xl">
+                      <p className="text-[10px] font-bold text-yellow-800 flex items-center gap-1">⚠️ The Deduction Trap</p>
+                      <p className="text-[9px] text-yellow-700 leading-tight mt-1">High mileage deductions reduce your taxes but also reduce your "Qualifying Income" for a loan. Banks look at your Net Profit (Line 31), not Gross Income.</p>
+                    </div>
+                  )}
                 </div>
                 <AdSlot />
               </div>
